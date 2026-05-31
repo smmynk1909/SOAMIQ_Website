@@ -15,7 +15,12 @@ window.SOAMIQ = {
     "typewriterTaglines": [
       "Trust Data. Trust AI.",
       "Build Smarter. Build Optimized."
-    ]
+    ],
+    "banner": {
+      "text": "Introducing GAURI — Agentic AI revenue intelligence.",
+      "linkLabel": "Learn more",
+      "href": "/gauri"
+    }
   },
   "location": {
     "label": "Headquarters",
@@ -313,7 +318,7 @@ window.SOAMIQ = {
     "description": "Ready to transform your business? Let us talk about your project.",
     "details": {
       "title": "Contact Information",
-      "description": "Reach out to our team to discuss your AI, data science, or engineering needs.",
+      "description": "Reach out to our team to discuss your AI, data science, or data engineering needs.",
       "email": { "label": "Email", "value": "hello@soamiq.ai", "href": "mailto:hello@soamiq.ai", "tag": "Mail" },
       "phone": null,
       "address": { "label": "Headquarters", "tag": "HQ" },

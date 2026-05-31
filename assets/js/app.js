@@ -1,18 +1,16 @@
 /* ============================================================
    SOAMIQ — shared app: renders header/footer + page content
-   from window.SOAMIQ (data.js) and wires up interactions.
+   from window.SOAMIQ (data.js) and wires up Apple-style motion.
    ============================================================ */
 (function () {
   "use strict";
   var D = window.SOAMIQ || {};
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- helpers ---------- */
-  function h(strings) { return strings; }
   function brandMarkup() {
-    var bars = [16, 26, 12, 22, 18];
-    var wave = bars.map(function (ht) {
-      return '<span style="height:' + ht + 'px"></span>';
-    }).join("");
+    var bars = [14, 24, 11, 20, 16];
+    var wave = bars.map(function (ht) { return '<span style="height:' + ht + 'px"></span>'; }).join("");
     return (
       '<span class="brand">' +
         '<span class="brand__wave" aria-hidden="true">' + wave + "</span>" +
@@ -23,19 +21,39 @@
   function initials(name) {
     return name.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
   }
+  function glyphOf(title) {
+    var stop = { and: 1, "&": 1, the: 1, of: 1, for: 1 };
+    var words = title.split(/\s+/).filter(function (w) { return !stop[w.toLowerCase()]; });
+    return words.slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
+  }
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
 
-  /* ---------- header ---------- */
+  /* ---------- header (banner + nav) ---------- */
   function renderHeader(page) {
     var nav = D.navigation || { links: [], cta: "Get Started" };
     var activeMap = { home: "/", services: "/services", frameworks: "/frameworks", about: "/about", contact: "/contact" };
     var active = activeMap[page];
     var links = nav.links.map(function (l) {
-      var isActive = l.href === active || (l.href.indexOf("#") === -1 && l.href === active);
+      var isActive = l.href === active;
       return '<a href="' + l.href + '"' + (isActive ? ' class="is-active"' : "") + ">" + l.label + "</a>";
     }).join("");
     var mobLinks = nav.links.map(function (l) { return '<a href="' + l.href + '">' + l.label + "</a>"; }).join("");
 
+    var banner = "";
+    var b = D.site && D.site.banner;
+    var dismissed = false;
+    try { dismissed = window.localStorage.getItem("soamiq_banner_dismissed") === "1"; } catch (e) {}
+    if (b && !dismissed) {
+      banner =
+        '<div class="topbar" id="topbar"><div class="container topbar__inner">' +
+          "<span>" + b.text + ' <a href="' + b.href + '">' + b.linkLabel + ' &rarr;</a></span>' +
+          '<button class="topbar__close" id="topbarClose" aria-label="Dismiss announcement">&times;</button>' +
+        "</div></div>";
+    }
+
     return (
+      '<div class="progress" id="progress" aria-hidden="true"></div>' +
+      banner +
       '<header class="nav" id="nav">' +
         '<div class="container nav__inner">' +
           '<a href="/" aria-label="' + (D.site.brand || "Soamiq") + ' home">' + brandMarkup() + "</a>" +
@@ -63,22 +81,18 @@
       return '<a href="' + s.href + '"' + (/^https?:/.test(s.href) ? ' target="_blank" rel="noopener"' : "") + ">" + s.label + "</a>";
     }).join("");
     return (
-      '<footer class="footer">' +
-        '<div class="container">' +
-          '<div class="footer__top">' +
-            '<div class="footer__about">' +
-              '<a href="/">' + brandMarkup() + "</a>" +
-              "<p>" + (D.site.footerDescription || "") + "</p>" +
-              '<div class="footer__social">' + social + "</div>" +
-            "</div>" +
-            cols +
-          "</div>" +
-          '<div class="footer__bottom">' +
-            "<span>&copy; " + (D.site.copyrightYear || new Date().getFullYear()) + " " + (D.site.legalName || "Soamiq Labs Private Limited") + ". All rights reserved.</span>" +
-            "<span>" + (D.location ? D.location.display : "") + "</span>" +
-          "</div>" +
+      '<footer class="footer"><div class="container">' +
+        '<div class="footer__top">' +
+          '<div class="footer__about"><a href="/">' + brandMarkup() + "</a>" +
+            "<p>" + (D.site.footerDescription || "") + "</p>" +
+            '<div class="footer__social">' + social + "</div></div>" +
+          cols +
         "</div>" +
-      "</footer>"
+        '<div class="footer__bottom">' +
+          "<span>&copy; " + (D.site.copyrightYear || new Date().getFullYear()) + " " + (D.site.legalName || "") + ". All rights reserved.</span>" +
+          "<span>" + (D.location ? D.location.display : "") + "</span>" +
+        "</div>" +
+      "</div></footer>"
     );
   }
 
@@ -86,33 +100,33 @@
   function heroSection() {
     var x = D.hero;
     var layers = x.systemLayers.map(function (l, i) {
-      return '<div class="layer reveal"><span class="layer__idx">0' + (i + 1) + '</span><span class="layer__name">' + l + "</span></div>";
+      return '<div class="layer reveal" data-anim="left"><span class="layer__idx">0' + (i + 1) + '</span><span class="layer__name">' + l + "</span></div>";
     }).join("");
     var proof = x.proofPoints.map(function (p) {
       return "<div><dt class=\"grad-text\">" + p.value + "</dt><dd>" + p.label + "</dd></div>";
     }).join("");
     return (
       '<section class="hero">' +
-        '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
-        '<span class="hero__orb hero__orb--2" aria-hidden="true"></span>' +
+        '<span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
+        '<span class="hero__orb hero__orb--2" data-parallax="0.1" aria-hidden="true"></span>' +
         '<div class="container hero__inner">' +
           "<div>" +
             '<span class="chip reveal"><span class="dot"></span>' + x.eyebrow + "</span>" +
-            '<h1 class="hero__title reveal" style="margin-top:20px">' + x.title +
-              '<span class="hero__type grad-text" id="typewriter"></span><span class="hero__caret" aria-hidden="true"></span>' +
+            '<h1 class="hero__title reveal" data-anim="up" style="margin-top:22px">' + x.title +
+              '<span class="hero__type"><span class="hero__type-mark" id="typewriter"></span><span class="hero__caret" aria-hidden="true"></span></span>' +
             "</h1>" +
-            '<p class="hero__desc reveal">' + x.description + "</p>" +
-            '<div class="hero__cta reveal">' +
+            '<p class="hero__desc reveal" data-anim="up">' + x.description + "</p>" +
+            '<div class="hero__cta reveal" data-anim="up">' +
               '<a href="' + x.primaryHref + '" class="btn btn--primary">' + x.primaryCta + "</a>" +
               '<a href="' + x.secondaryHref + '" class="btn btn--ghost">' + x.secondaryCta + "</a>" +
             "</div>" +
-            '<dl class="hero__proof reveal">' + proof + "</dl>" +
+            '<dl class="hero__proof reveal" data-anim="up">' + proof + "</dl>" +
           "</div>" +
-          '<div class="panel reveal">' +
+          '<div class="panel reveal" data-anim="scale">' +
             '<div class="panel__top"><span class="panel__eyebrow">' + x.panelEyebrow + '</span>' +
               '<span class="panel__status"><span class="dot"></span>' + x.panelStatus + "</span></div>" +
             '<h3 class="panel__title">' + x.panelTitle + "</h3>" +
-            '<div class="panel__layers">' + layers + "</div>" +
+            '<div class="panel__layers" data-stagger>' + layers + "</div>" +
             '<p class="panel__note">' + x.systemLayerNote + "</p>" +
           "</div>" +
         "</div>" +
@@ -129,22 +143,26 @@
 
   function premiumFlowSection() {
     var p = D.premiumFlow;
-    var items = p.items.map(function (it) {
+    var items = p.items.map(function (it, i) {
       return (
-        '<div class="flow__item reveal">' +
-          '<div class="flow__label">' + it.label + "</div>" +
-          '<div class="flow__body"><h3>' + it.title + "</h3><p>" + it.description + "</p></div>" +
+        '<div class="flow__item reveal" data-anim="up">' +
+          '<div class="flow__num">' + (i + 1) + "</div>" +
+          '<div class="flow__body"><div class="flow__label">' + it.label + "</div>" +
+            "<h3>" + it.title + "</h3><p>" + it.description + "</p></div>" +
         "</div>"
       );
     }).join("");
     return (
-      '<section class="section section--alt">' +
-        '<div class="container">' +
-          '<div class="section__head reveal"><p class="eyebrow">' + p.eyebrow + '</p>' +
+      '<section class="section section--white">' +
+        '<div class="container"><div class="scrolly">' +
+          '<div class="scrolly__aside">' +
+            '<p class="eyebrow">' + p.eyebrow + '</p>' +
             '<h2 class="section__title">' + p.title + '</h2>' +
-            '<p class="lead lead--center">' + p.description + "</p></div>" +
-          '<div class="flow">' + items + "</div>" +
-        "</div>" +
+            '<p class="lead">' + p.description + "</p>" +
+            '<a href="/services" class="btn btn--ghost" style="margin-top:28px">See all services</a>' +
+          "</div>" +
+          '<div class="scrolly__items" data-stagger>' + items + "</div>" +
+        "</div></div>" +
       "</section>"
     );
   }
@@ -154,7 +172,7 @@
     var cards = s.items.map(function (it) {
       var outs = it.outcomes.map(function (o) { return "<li>" + o + "</li>"; }).join("");
       return (
-        '<article class="card reveal">' +
+        '<article class="card reveal" data-anim="up">' +
           '<span class="card__tag">' + it.tag + "</span>" +
           "<h3>" + it.title + "</h3><p>" + it.description + "</p>" +
           '<ul class="card__list">' + outs + "</ul>" +
@@ -162,48 +180,59 @@
       );
     }).join("");
     return (
-      '<section class="section" id="services">' +
-        '<div class="container">' +
+      '<section class="section" id="services"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">What we do</p>' +
             '<h2 class="section__title">' + s.title + '</h2>' +
             '<p class="lead lead--center">' + s.description + "</p></div>" +
-          '<div class="cards">' + cards + "</div>" +
-        "</div>" +
-      "</section>"
+          '<div class="cards" data-stagger>' + cards + "</div>" +
+      "</div></section>"
     );
   }
 
   function processSection() {
     var p = D.process;
     var steps = p.steps.map(function (st) {
-      return '<li class="reveal"><div class="timeline__num">' + st.number + "</div><h3>" + st.title + "</h3><p>" + st.description + "</p></li>";
+      return '<li class="reveal" data-anim="up"><div class="timeline__num grad-text">' + st.number + "</div><h3>" + st.title + "</h3><p>" + st.description + "</p></li>";
     }).join("");
     return (
-      '<section class="section section--alt">' +
-        '<div class="container">' +
+      '<section class="section section--alt"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Method</p>' +
             '<h2 class="section__title">' + p.title + '</h2>' +
             '<p class="lead lead--center">' + p.description + "</p></div>" +
-          '<ol class="timeline">' + steps + "</ol>" +
-        "</div>" +
-      "</section>"
+          '<ol class="timeline" data-stagger>' + steps + "</ol>" +
+      "</div></section>"
     );
   }
 
-  function industriesSection() {
+  function storyVisual(glyph) {
+    return (
+      '<div class="story__visual">' +
+        '<div class="story__rings" aria-hidden="true"><span></span><span></span><span></span></div>' +
+        '<span class="story__glyph grad-text">' + glyph + "</span>" +
+      "</div>"
+    );
+  }
+
+  function domainsStorySection() {
     var ind = D.industries;
-    var items = ind.items.map(function (it) {
-      return '<article class="industry reveal"><h3>' + it.title + "</h3><p>" + it.description + "</p></article>";
+    var stories = ind.items.map(function (it, i) {
+      return (
+        '<article class="story reveal" data-anim="up">' +
+          "<div>" +
+            '<div class="story__index">Domain ' + pad2(i + 1) + " / " + pad2(ind.items.length) + "</div>" +
+            "<h3>" + it.title + "</h3><p>" + it.description + "</p>" +
+          "</div>" +
+          storyVisual(glyphOf(it.title)) +
+        "</article>"
+      );
     }).join("");
     return (
-      '<section class="section">' +
-        '<div class="container">' +
+      '<section class="section" id="domains"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Domains</p>' +
             '<h2 class="section__title">' + ind.title + '</h2>' +
             '<p class="lead lead--center">' + ind.description + "</p></div>" +
-          '<div class="industries">' + items + "</div>" +
-        "</div>" +
-      "</section>"
+          '<div class="stories">' + stories + "</div>" +
+      "</div></section>"
     );
   }
 
@@ -211,7 +240,7 @@
     var c = D.caseStudies;
     var items = c.items.map(function (it) {
       return (
-        '<article class="play reveal">' +
+        '<article class="play reveal" data-anim="up">' +
           '<div class="play__meta"><span class="play__client">' + it.client + '</span><span class="play__result">' + it.result + "</span></div>" +
           "<h3>" + it.title + "</h3><p>" + it.description + "</p>" +
           '<a class="link-arrow" href="/use-cases/' + it.useCaseSlug + '">View use case <span aria-hidden="true">&rarr;</span></a>' +
@@ -219,14 +248,12 @@
       );
     }).join("");
     return (
-      '<section class="section section--alt" id="case-studies">' +
-        '<div class="container">' +
+      '<section class="section section--white" id="case-studies"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Results</p>' +
             '<h2 class="section__title">' + c.title + '</h2>' +
             '<p class="lead lead--center">' + c.description + "</p></div>" +
-          '<div class="plays">' + items + "</div>" +
-        "</div>" +
-      "</section>"
+          '<div class="plays" data-stagger>' + items + "</div>" +
+      "</div></section>"
     );
   }
 
@@ -234,50 +261,47 @@
     var f = D.faq;
     var items = f.items.map(function (it) {
       return (
-        '<div class="faq__item">' +
+        '<div class="faq__item reveal">' +
           '<button class="faq__q" aria-expanded="false">' + it.question + '<span class="ic" aria-hidden="true">+</span></button>' +
           '<div class="faq__a"><p>' + it.answer + "</p></div>" +
         "</div>"
       );
     }).join("");
     return (
-      '<section class="section">' +
-        '<div class="container">' +
+      '<section class="section"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">FAQ</p>' +
             '<h2 class="section__title">' + f.title + '</h2>' +
             '<p class="lead lead--center">' + f.description + "</p></div>" +
           '<div class="faq">' + items + "</div>" +
-        "</div>" +
-      "</section>"
+      "</div></section>"
     );
   }
 
   function ctaBand(title, text) {
     return (
-      '<section class="section">' +
-        '<div class="container"><div class="cta-band reveal">' +
+      '<section class="section"><div class="container"><div class="cta-band reveal" data-anim="scale">' +
           "<h2>" + title + "</h2><p>" + text + "</p>" +
           '<div class="hero__cta">' +
             '<a href="/contact" class="btn btn--primary">' + D.hero.primaryCta + "</a>" +
             '<a href="/frameworks" class="btn btn--ghost">' + D.hero.secondaryCta + "</a>" +
           "</div>" +
-        "</div></div>" +
-      "</section>"
+      "</div></div></section>"
     );
   }
 
   function statsRow(stats) {
     var items = stats.map(function (s) {
-      return '<div class="stat reveal"><div class="stat__value grad-text">' + s.value + '</div><div class="stat__label">' + s.label + "</div></div>";
+      return '<div class="stat reveal" data-anim="up"><div class="stat__value grad-text">' + s.value + '</div><div class="stat__label">' + s.label + "</div></div>";
     }).join("");
-    return '<div class="stats">' + items + "</div>";
+    return '<div class="stats" data-stagger>' + items + "</div>";
   }
 
   function pageHero(title, desc) {
     return (
       '<section class="page-hero">' +
-        '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
-        '<div class="container"><h1 class="reveal">' + title + '</h1><p class="reveal">' + desc + "</p></div>" +
+        '<span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
+        '<div class="container"><h1 class="reveal" data-anim="up">' + title + "</h1>" +
+          (desc ? '<p class="reveal" data-anim="up">' + desc + "</p>" : "") + "</div>" +
       "</section>"
     );
   }
@@ -286,7 +310,7 @@
   var pages = {
     home: function () {
       return heroSection() + capabilitiesStrip() + premiumFlowSection() + servicesSection() +
-        industriesSection() + processSection() + caseStudiesSection() + faqSection() +
+        domainsStorySection() + processSection() + caseStudiesSection() + faqSection() +
         ctaBand("Build smarter. Build optimized.", D.site.positioning);
     },
     services: function () {
@@ -296,47 +320,51 @@
     },
     frameworks: function () {
       var fw = D.frameworks;
-      var items = fw.items.map(function (it) {
+      var stories = fw.items.map(function (it) {
         return (
-          '<article class="card reveal" style="display:flex;flex-direction:column;gap:14px">' +
-            '<div class="play__meta"><span class="card__tag">' + it.name + '</span><span class="play__result">' + it.status + "</span></div>" +
-            "<h3>" + it.label + "</h3><p>" + it.description + "</p>" +
-            '<a class="link-arrow" href="' + it.href + '">Explore ' + it.name + ' <span aria-hidden="true">&rarr;</span></a>' +
+          '<article class="story reveal" data-anim="up">' +
+            "<div>" +
+              '<p class="eyebrow">' + it.name + "</p>" +
+              "<h3>" + it.label + "</h3><p>" + it.description + "</p>" +
+              '<div class="story__tags"><span>' + it.status + "</span></div>" +
+              '<div style="margin-top:24px"><a class="btn btn--primary" href="' + it.href + '">Explore ' + it.name + " &rarr;</a></div>" +
+            "</div>" +
+            storyVisual(glyphOf(it.name)) +
           "</article>"
         );
       }).join("");
       return pageHero(fw.title, fw.description) +
-        '<section class="section"><div class="container"><div class="cards cards--2">' + items + "</div></div></section>" +
+        '<section class="section"><div class="container"><div class="stories">' + stories + "</div></div></section>" +
         ctaBand("Put a framework to work.", "GAURI is live, with more Soamiq frameworks on the way.");
     },
     about: function () {
       var a = D.about;
-      var paras = a.paragraphs.map(function (p) { return "<p>" + p + "</p>"; }).join("");
+      var paras = a.paragraphs.map(function (p) { return '<p class="reveal" data-anim="up">' + p + "</p>"; }).join("");
       var strengths = a.strengths.map(function (s) {
-        return '<article class="card reveal"><h3>' + s.title + "</h3><p>" + s.description + "</p></article>";
+        return '<article class="card reveal" data-anim="up"><h3>' + s.title + "</h3><p>" + s.description + "</p></article>";
       }).join("");
       var t = D.team;
       var members = t.members.map(function (m) {
         return (
-          '<article class="member reveal">' +
+          '<article class="member reveal" data-anim="up">' +
             '<div class="member__avatar" aria-hidden="true">' + initials(m.name) + "</div>" +
             "<h3>" + m.name + '</h3><p class="member__role">' + m.role + '</p><p class="member__bio">' + m.bio + "</p>" +
           "</article>"
         );
       }).join("");
       return pageHero(a.title, D.site.positioning) +
-        '<section class="section"><div class="container"><div class="article reveal">' + paras + "</div></div></section>" +
+        '<section class="section"><div class="container"><div class="article">' + paras + "</div></div></section>" +
         '<section class="section section--alt"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Why Soamiq</p><h2 class="section__title">What sets us apart</h2></div>' +
-          '<div class="cards">' + strengths + "</div>" +
-          '<div style="margin-top:36px">' + statsRow(a.stats) + "</div>" +
+          '<div class="cards" data-stagger>' + strengths + "</div>" +
+          '<div style="margin-top:38px">' + statsRow(a.stats) + "</div>" +
         "</div></section>" +
         '<section class="section" id="team"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">People</p><h2 class="section__title">' + t.title + '</h2>' +
           '<p class="lead lead--center">' + t.description + "</p></div>" +
-          '<div class="team">' + members + "</div>" +
+          '<div class="team" data-stagger>' + members + "</div>" +
         "</div></section>" +
-        industriesSection() +
+        domainsStorySection() +
         ctaBand("Let's build something intelligent.", "Tell us about your data and the decisions you want to automate.");
     },
     contact: function () {
@@ -347,8 +375,8 @@
         '<div class="row"><span class="tag">Geo</span><div><div class="k">' + det.serviceAreas.label + '</div><div class="v">' + det.serviceAreas.value + "</div></div></div>";
       return pageHero(c.title, c.description) +
         '<section class="section" style="padding-top:20px"><div class="container"><div class="contact-grid">' +
-          '<div class="contact-info reveal"><h2>' + det.title + '</h2><p class="muted" style="margin-top:8px">' + det.description + "</p>" + rows + "</div>" +
-          '<form class="form reveal" id="contactForm" novalidate>' +
+          '<div class="contact-info reveal" data-anim="left"><h2>' + det.title + '</h2><p class="muted" style="margin-top:8px">' + det.description + "</p>" + rows + "</div>" +
+          '<form class="form reveal" data-anim="right" id="contactForm" novalidate>' +
             '<div class="row2">' +
               '<div class="field"><label for="name">' + fld.name + '</label><input id="name" name="name" type="text" placeholder="' + ph.name + '" autocomplete="name" required></div>' +
               '<div class="field"><label for="email">' + fld.email + '</label><input id="email" name="email" type="email" placeholder="' + ph.email + '" autocomplete="email" required></div>' +
@@ -363,32 +391,32 @@
     gauri: function () {
       var g = D.gauri;
       var stages = g.stages.map(function (s) {
-        return '<article class="stage reveal"><h3>' + s.title + "</h3><p>" + s.description + "</p></article>";
+        return '<article class="stage reveal" data-anim="up"><h3>' + s.title + "</h3><p>" + s.description + "</p></article>";
       }).join("");
-      var outs = g.outcomes.map(function (o) { return '<span class="pill reveal">' + o + "</span>"; }).join("");
+      var outs = g.outcomes.map(function (o) { return '<span class="pill reveal" data-anim="scale">' + o + "</span>"; }).join("");
       return (
         '<section class="page-hero">' +
-          '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
-          '<span class="hero__orb hero__orb--2" aria-hidden="true"></span>' +
+          '<span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
+          '<span class="hero__orb hero__orb--2" data-parallax="0.1" aria-hidden="true"></span>' +
           '<div class="container">' +
             '<span class="chip reveal"><span class="dot"></span>' + g.eyebrow + "</span>" +
-            '<h1 class="reveal" style="margin-top:18px">' + g.title + "</h1>" +
-            '<p class="reveal">' + g.description + "</p>" +
-            '<div class="hero__cta reveal" style="justify-content:center">' +
+            '<h1 class="reveal" data-anim="up" style="margin-top:20px">' + g.title + "</h1>" +
+            '<p class="reveal" data-anim="up">' + g.description + "</p>" +
+            '<div class="hero__cta reveal" style="justify-content:center;margin-top:30px">' +
               '<a href="/contact" class="btn btn--primary">' + g.primaryCta + "</a>" +
               '<a href="/services#services" class="btn btn--ghost">' + g.secondaryCta + "</a>" +
             "</div>" +
           "</div>" +
         "</section>" +
-        '<section class="section"><div class="container">' +
+        '<section class="section section--white"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Workflow</p><h2 class="section__title">' + g.howItWorksTitle + '</h2>' +
           '<p class="lead lead--center">' + g.howItWorksDescription + "</p></div>" +
-          '<div class="stages">' + stages + "</div>" +
+          '<div class="stages" data-stagger>' + stages + "</div>" +
         "</div></section>" +
         '<section class="section section--alt"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Impact</p><h2 class="section__title">' + g.outcomesTitle + '</h2>' +
           '<p class="lead lead--center">' + g.outcomesDescription + "</p></div>" +
-          '<div class="pills">' + outs + "</div>" +
+          '<div class="pills" data-stagger>' + outs + "</div>" +
         "</div></section>" +
         ctaBand("Accelerate revenue with GAURI.", "Growth Acceleration Using Revenue Intelligence, tailored to your sales motion.")
       );
@@ -406,11 +434,11 @@
       if (!uc) return pageHero("Use case not found", "Please return to the services page.");
       var outs = uc.outcomes.map(function (o) { return "<li>" + o + "</li>"; }).join("");
       return (
-        '<section class="page-hero"><span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
+        '<section class="page-hero"><span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
           '<div class="container">' +
             '<span class="chip reveal"><span class="dot"></span>' + uc.category + " &middot; " + uc.status + "</span>" +
-            '<h1 class="reveal" style="margin-top:18px">' + uc.title + "</h1>" +
-            '<p class="reveal">' + uc.summary + "</p>" +
+            '<h1 class="reveal" data-anim="up" style="margin-top:20px">' + uc.title + "</h1>" +
+            '<p class="reveal" data-anim="up">' + uc.summary + "</p>" +
           "</div></section>" +
         '<section class="section" style="padding-top:10px"><div class="container"><div class="article reveal">' +
           "<h2>The problem</h2><p>" + uc.problem + "</p>" +
@@ -425,53 +453,91 @@
   /* ---------- interactions ---------- */
   function typewriter(node, phrases) {
     if (!node || !phrases || !phrases.length) return;
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      node.textContent = phrases[0]; return;
-    }
+    if (reduceMotion) { node.textContent = phrases[0]; return; }
     var pi = 0, ci = 0, deleting = false;
     function tick() {
       var phrase = phrases[pi];
       node.textContent = phrase.slice(0, ci);
-      if (!deleting && ci < phrase.length) { ci++; setTimeout(tick, 55); }
-      else if (!deleting && ci === phrase.length) { deleting = true; setTimeout(tick, 1800); }
-      else if (deleting && ci > 0) { ci--; setTimeout(tick, 28); }
-      else { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 350); }
+      if (!deleting && ci < phrase.length) { ci++; setTimeout(tick, 58); }
+      else if (!deleting && ci === phrase.length) { deleting = true; setTimeout(tick, 1900); }
+      else if (deleting && ci > 0) { ci--; setTimeout(tick, 30); }
+      else { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 380); }
     }
     tick();
   }
 
   function initInteractions() {
     var nav = document.getElementById("nav");
+    var progress = document.getElementById("progress");
     var onScroll = function () {
-      if (window.scrollY > 12) nav.classList.add("is-scrolled");
-      else nav.classList.remove("is-scrolled");
+      var y = window.scrollY || window.pageYOffset;
+      if (nav) nav.classList.toggle("is-scrolled", y > 8);
+      if (progress) {
+        var docH = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (docH > 0 ? (y / docH) * 100 : 0) + "%";
+      }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
+    // banner dismiss
+    var close = document.getElementById("topbarClose");
+    if (close) {
+      close.addEventListener("click", function () {
+        var bar = document.getElementById("topbar");
+        if (bar) bar.style.display = "none";
+        try { window.localStorage.setItem("soamiq_banner_dismissed", "1"); } catch (e) {}
+      });
+    }
+
+    // mobile menu
     var toggle = document.getElementById("navToggle");
     var mobile = document.getElementById("navMobile");
     if (toggle && mobile) {
-      var close = function () { mobile.classList.remove("is-open"); toggle.setAttribute("aria-expanded", "false"); };
+      var closeMenu = function () { mobile.classList.remove("is-open"); toggle.setAttribute("aria-expanded", "false"); };
       toggle.addEventListener("click", function () {
         var open = mobile.classList.toggle("is-open");
         toggle.setAttribute("aria-expanded", String(open));
       });
-      mobile.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", close); });
-      document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+      mobile.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", closeMenu); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenu(); });
     }
 
-    // reveal
+    // staggered reveal delays
+    document.querySelectorAll("[data-stagger]").forEach(function (group) {
+      var kids = group.querySelectorAll(":scope > .reveal");
+      kids.forEach(function (el, i) { el.style.transitionDelay = (i * 0.09) + "s"; });
+    });
+
+    // reveal observer
     var revealEls = document.querySelectorAll(".reveal");
-    if ("IntersectionObserver" in window) {
+    if ("IntersectionObserver" in window && !reduceMotion) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (en) {
           if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); }
         });
-      }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
-      revealEls.forEach(function (el, i) { el.style.transitionDelay = (i % 4) * 70 + "ms"; io.observe(el); });
+      }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+      revealEls.forEach(function (el) { io.observe(el); });
     } else {
       revealEls.forEach(function (el) { el.classList.add("is-visible"); });
+    }
+
+    // parallax
+    var pxEls = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
+    if (pxEls.length && !reduceMotion) {
+      var ticking = false;
+      var update = function () {
+        var vh = window.innerHeight;
+        pxEls.forEach(function (el) {
+          var r = el.getBoundingClientRect();
+          var off = (r.top + r.height / 2) - vh / 2;
+          var speed = parseFloat(el.getAttribute("data-parallax")) || 0.05;
+          el.style.transform = "translate3d(0," + (off * -speed).toFixed(1) + "px,0)";
+        });
+        ticking = false;
+      };
+      window.addEventListener("scroll", function () { if (!ticking) { window.requestAnimationFrame(update); ticking = true; } }, { passive: true });
+      update();
     }
 
     // typewriter
@@ -529,7 +595,7 @@
       else if (page === "terms") main.innerHTML = pages.legal("terms");
       else if (page === "usecase") main.innerHTML = pages.usecase(main.dataset.slug);
       else if (pages[page]) main.innerHTML = pages[page]();
-      else main.innerHTML = pages.home();
+      // unknown pages (e.g. 404) keep their inline markup
     }
     initInteractions();
   });
