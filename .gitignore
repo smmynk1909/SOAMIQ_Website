@@ -1,0 +1,14 @@
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Dependency and build output directories for future app tooling
+node_modules/
+dist/
+build/
+.next/
+.cache/
