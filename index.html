@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="SOAMIQ LABS builds intelligent systems, applied research, and automation products for modern teams."
+    />
+    <title>SOAMIQ LABS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-wrap">
+        <a href="#top" class="brand" id="brand-name">SOAMIQ LABS</a>
+        <nav aria-label="Main navigation">
+          <ul id="nav-list" class="nav-list"></ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero section">
+        <div class="container hero-grid">
+          <div>
+            <p class="eyebrow" id="hero-eyebrow"></p>
+            <h1 id="hero-title"></h1>
+            <p class="hero-description" id="hero-description"></p>
+            <div class="hero-actions">
+              <a id="hero-primary-cta" class="btn btn-primary" href="#contact"></a>
+              <a id="hero-secondary-cta" class="btn btn-secondary" href="#projects"></a>
+            </div>
+          </div>
+          <div class="hero-panel">
+            <h2 id="mission-title"></h2>
+            <p id="mission-body"></p>
+            <ul id="hero-highlights" class="inline-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <h2>About SOAMIQ LABS</h2>
+          <p id="about-text" class="lead"></p>
+        </div>
+      </section>
+
+      <section id="capabilities" class="section section-muted">
+        <div class="container">
+          <h2>Capabilities</h2>
+          <div id="capabilities-grid" class="card-grid"></div>
+        </div>
+      </section>
+
+      <section id="projects" class="section">
+        <div class="container">
+          <h2>Featured Work</h2>
+          <div id="projects-grid" class="card-grid"></div>
+        </div>
+      </section>
+
+      <section id="team" class="section section-muted">
+        <div class="container">
+          <h2>Core Team Model</h2>
+          <div id="team-grid" class="card-grid"></div>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="container contact">
+          <div>
+            <h2>Let’s Build With Intelligence</h2>
+            <p class="lead" id="contact-text"></p>
+          </div>
+          <div class="contact-card">
+            <p><strong>Email:</strong> <a id="contact-email-link" href="#"></a></p>
+            <p>
+              <strong>Location:</strong>
+              <span id="contact-location"></span>
+            </p>
+            <p>
+              <strong>Hours:</strong>
+              <span id="contact-hours"></span>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-wrap">
+        <p id="footer-copy"></p>
+      </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
