@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://soamiq.ai/</loc><priority>1.0</priority></url>
+  <url><loc>https://soamiq.ai/services</loc><priority>0.9</priority></url>
+  <url><loc>https://soamiq.ai/frameworks</loc><priority>0.8</priority></url>
+  <url><loc>https://soamiq.ai/gauri</loc><priority>0.8</priority></url>
+  <url><loc>https://soamiq.ai/about</loc><priority>0.7</priority></url>
+  <url><loc>https://soamiq.ai/contact</loc><priority>0.7</priority></url>
+  <url><loc>https://soamiq.ai/use-cases/gauri-revenue-intelligence</loc><priority>0.6</priority></url>
+  <url><loc>https://soamiq.ai/use-cases/migration-agent</loc><priority>0.6</priority></url>
+  <url><loc>https://soamiq.ai/use-cases/knowledge-graph-agents</loc><priority>0.6</priority></url>
+</urlset>

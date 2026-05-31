@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 160" width="520" height="160" font-family="'Jura','Space Grotesk',sans-serif">
+  <defs>
+    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2f6bff"/>
+      <stop offset="0.5" stop-color="#34a8ff"/>
+      <stop offset="1" stop-color="#25e0ff"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="520" height="160" fill="#05060a"/>
+  <!-- waveform ticks -->
+  <g stroke="url(#lg)" stroke-width="2.4" stroke-linecap="round" opacity="0.9" filter="url(#glow)">
+    <line x1="70"  y1="46" x2="70"  y2="62"/>
+    <line x1="92"  y1="34" x2="92"  y2="60"/>
+    <line x1="114" y1="40" x2="114" y2="58"/>
+    <line x1="180" y1="30" x2="180" y2="56"/>
+    <line x1="210" y1="24" x2="210" y2="58"/>
+    <line x1="250" y1="34" x2="250" y2="56"/>
+    <line x1="300" y1="28" x2="300" y2="58"/>
+    <line x1="360" y1="38" x2="360" y2="56"/>
+    <line x1="408" y1="32" x2="408" y2="58"/>
+    <line x1="92"  y1="100" x2="92"  y2="126"/>
+    <line x1="140" y1="104" x2="140" y2="130"/>
+    <line x1="200" y1="104" x2="200" y2="134"/>
+    <line x1="260" y1="104" x2="260" y2="128"/>
+    <line x1="320" y1="104" x2="320" y2="132"/>
+    <line x1="380" y1="104" x2="380" y2="126"/>
+    <line x1="430" y1="100" x2="430" y2="124"/>
+  </g>
+  <g fill="#25e0ff" filter="url(#glow)">
+    <circle cx="210" cy="24" r="3"/><circle cx="300" cy="28" r="3"/>
+    <circle cx="200" cy="134" r="3"/><circle cx="320" cy="132" r="3"/>
+  </g>
+  <!-- wordmark -->
+  <text x="260" y="96" text-anchor="middle" font-size="62" font-weight="600"
+        letter-spacing="6" fill="url(#lg)" filter="url(#glow)">SOAMIQ</text>
+</svg>
