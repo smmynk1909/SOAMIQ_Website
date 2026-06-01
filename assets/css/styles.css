@@ -103,8 +103,10 @@ ul { margin: 0; }
 
 /* ---------- Brand / logo (image) ---------- */
 .brand { display: inline-flex; align-items: center; }
-.brand__img { height: 40px; width: auto; display: block; object-fit: contain; border-radius: 9px; }
-.footer .brand__img { height: 44px; }
+.brand__img { height: 48px; width: auto; display: block; object-fit: contain; border-radius: 12px; }
+.footer .brand__img { height: 66px; border-radius: 16px; }
+.nav__inner .brand__img { transition: transform .35s var(--ease); }
+.nav__inner a:hover .brand__img { transform: scale(1.04); }
 
 /* ---------- Nav (sticky, translucent) ---------- */
 .nav { position: sticky; top: 0; z-index: 200; transition: background .4s var(--ease), box-shadow .4s, border-color .4s; border-bottom: 1px solid transparent; backdrop-filter: saturate(180%) blur(16px); -webkit-backdrop-filter: saturate(180%) blur(16px); background: rgba(244, 244, 247, 0.72); }
