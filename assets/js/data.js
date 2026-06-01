@@ -226,8 +226,8 @@ window.SOAMIQ = {
     "members": [
       { "name": "Amita Soam", "role": "Director", "bio": "Director at Soamiq Labs Private Limited." },
       { "name": "Subhash Singh", "role": "Director", "bio": "Director at Soamiq Labs Private Limited." },
-      { "name": "Mayank", "role": "Super SME — Agentic AI, Generative AI & Data Engineering", "bio": "Subject matter expert architecting agentic AI, generative AI, and data engineering solutions end to end." },
-      { "name": "Priyamvada", "role": "Super SME — Data Engineering", "bio": "Subject matter expert for data engineering, modern data platforms, and trusted data foundations." }
+      { "name": "Mayank", "role": "SME — Agentic AI, Generative AI & Data Engineering", "bio": "Subject matter expert architecting agentic AI, generative AI, and data engineering solutions end to end." },
+      { "name": "Priyamvada", "role": "SME — Data Engineering", "bio": "Subject matter expert for data engineering, modern data platforms, and trusted data foundations." }
     ]
   },
   "faq": {
