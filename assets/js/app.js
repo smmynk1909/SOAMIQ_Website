@@ -11,7 +11,7 @@
   function brandMarkup() {
     // Uses the official logo image. Drop your exact file at
     // /assets/img/soamiq_logo.png is the official brand logo.
-    return '<span class="brand"><img class="brand__img" src="/assets/img/soamiq_logo.png" alt="SOAMIQ — soamiq.ai" width="80" height="40" /></span>';
+    return '<span class="brand"><img class="brand__img" src="/assets/img/logo-wordmark.png" alt="SOAMIQ — soamiq.ai" width="321" height="207" /></span>';
   }
   function initials(name) {
     return name.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
