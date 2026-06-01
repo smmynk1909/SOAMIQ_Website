@@ -10,8 +10,8 @@
   /* ---------- helpers ---------- */
   function brandMarkup() {
     // Uses the official logo image. Drop your exact file at
-    // /assets/img/logo.png to replace the placeholder.
-    return '<span class="brand"><img class="brand__img" src="/assets/img/logo.png" alt="SOAMIQ — soamiq.ai" width="132" height="40" /></span>';
+    // /assets/img/soamiq_logo.png is the official brand logo.
+    return '<span class="brand"><img class="brand__img" src="/assets/img/soamiq_logo.png" alt="SOAMIQ — soamiq.ai" width="80" height="40" /></span>';
   }
   function initials(name) {
     return name.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
