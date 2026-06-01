@@ -9,26 +9,89 @@
 
   /* ---------- helpers ---------- */
   function brandMarkup() {
-    var bars = [14, 24, 11, 20, 16];
-    var wave = bars.map(function (ht) { return '<span style="height:' + ht + 'px"></span>'; }).join("");
-    return (
-      '<span class="brand">' +
-        '<span class="brand__wave" aria-hidden="true">' + wave + "</span>" +
-        '<span class="brand__word"><span class="grad-text">SOAMIQ</span><span class="brand__tld">.ai</span></span>' +
-      "</span>"
-    );
+    // Uses the official logo image. Drop your exact file at
+    // /assets/img/logo.png to replace the placeholder.
+    return '<span class="brand"><img class="brand__img" src="/assets/img/logo.png" alt="SOAMIQ — soamiq.ai" width="132" height="40" /></span>';
   }
   function initials(name) {
     return name.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
   }
-  function glyphOf(title) {
-    var stop = { and: 1, "&": 1, the: 1, of: 1, for: 1 };
-    var words = title.split(/\s+/).filter(function (w) { return !stop[w.toLowerCase()]; });
-    return words.slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
-  }
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
 
-  /* ---------- header (banner + nav) ---------- */
+  /* ---------- animated domain / framework illustrations (inline SVG) ---------- */
+  var ILLU = {
+    bank:
+      '<svg viewBox="0 0 200 160" role="img" aria-label="Banking and financial services">' +
+        '<g class="illu-float" fill="none" stroke="#1f6bff" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">' +
+          '<path d="M42 62 L100 32 L158 62 Z" fill="rgba(31,107,255,.08)"/>' +
+          '<line x1="40" y1="62" x2="160" y2="62"/>' +
+          '<line x1="58" y1="62" x2="58" y2="108"/><line x1="82" y1="62" x2="82" y2="108"/>' +
+          '<line x1="118" y1="62" x2="118" y2="108"/><line x1="142" y1="62" x2="142" y2="108"/>' +
+          '<line x1="38" y1="108" x2="162" y2="108"/><line x1="30" y1="122" x2="170" y2="122"/>' +
+        "</g>" +
+        '<polyline class="illu-draw" points="56,98 84,80 114,88 150,58" fill="none" stroke="#12a150" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<circle class="illu-pulse" cx="150" cy="58" r="4.5" fill="#12a150"/>' +
+      "</svg>",
+    shield:
+      '<svg viewBox="0 0 200 160" role="img" aria-label="Insurance">' +
+        '<g class="illu-float">' +
+          '<path d="M100 26 L150 44 V82 C150 112 128 130 100 138 C72 130 50 112 50 82 V44 Z" fill="rgba(31,107,255,.08)" stroke="#1f6bff" stroke-width="3.4" stroke-linejoin="round"/>' +
+          '<polyline class="illu-draw" points="76,84 95,104 128,66" fill="none" stroke="#12a150" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+        "</g>" +
+      "</svg>",
+    retail:
+      '<svg viewBox="0 0 200 160" role="img" aria-label="Retail">' +
+        '<g class="illu-swing">' +
+          '<path d="M62 58 H138 L148 132 H52 Z" fill="rgba(31,107,255,.08)" stroke="#1f6bff" stroke-width="3.4" stroke-linejoin="round"/>' +
+          '<path d="M80 64 V50 a20 20 0 0 1 40 0 V64" fill="none" stroke="#1f6bff" stroke-width="3.4" stroke-linecap="round"/>' +
+          '<circle class="illu-pulse" cx="100" cy="94" r="6" fill="#12a150"/>' +
+        "</g>" +
+      "</svg>",
+    box:
+      '<svg viewBox="0 0 200 160" role="img" aria-label="Consumer packaged goods">' +
+        '<g class="illu-float" fill="none" stroke="#1f6bff" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round">' +
+          '<path d="M100 32 L156 62 V112 L100 142 L44 112 V62 Z" fill="rgba(31,107,255,.07)"/>' +
+          '<path d="M44 62 L100 92 L156 62"/>' +
+          '<line x1="100" y1="92" x2="100" y2="142"/>' +
+        "</g>" +
+        '<path class="illu-draw" d="M70 47 L126 77" fill="none" stroke="#12a150" stroke-width="3.6" stroke-linecap="round"/>' +
+      "</svg>",
+    game:
+      '<svg viewBox="0 0 200 160" role="img" aria-label="Gaming">' +
+        '<g class="illu-float">' +
+          '<rect x="44" y="64" width="112" height="56" rx="28" fill="rgba(31,107,255,.08)" stroke="#1f6bff" stroke-width="3.4"/>' +
+          '<line x1="72" y1="82" x2="72" y2="102" stroke="#1f6bff" stroke-width="3.4" stroke-linecap="round"/>' +
+          '<line x1="62" y1="92" x2="82" y2="92" stroke="#1f6bff" stroke-width="3.4" stroke-linecap="round"/>' +
+          '<circle class="illu-pulse" cx="128" cy="86" r="5.4" fill="#12a150"/>' +
+          '<circle class="illu-pulse" style="animation-delay:.6s" cx="142" cy="100" r="5.4" fill="#1f6bff"/>' +
+        "</g>" +
+      "</svg>",
+    cloud:
+      '<svg viewBox="0 0 200 160" role="img" aria-label="New age cloud platforms">' +
+        '<g class="illu-float">' +
+          '<path d="M70 108 a25 25 0 0 1 4 -49 a31 31 0 0 1 59 -6 a23 23 0 0 1 7 55 Z" fill="rgba(31,107,255,.08)" stroke="#1f6bff" stroke-width="3.4" stroke-linejoin="round"/>' +
+        "</g>" +
+        '<g>' +
+          '<circle class="illu-pulse" cx="84" cy="124" r="4.4" fill="#12a150"/>' +
+          '<circle class="illu-pulse" style="animation-delay:.4s" cx="106" cy="130" r="4.4" fill="#1f6bff"/>' +
+          '<circle class="illu-pulse" style="animation-delay:.8s" cx="128" cy="124" r="4.4" fill="#12a150"/>' +
+        "</g>" +
+      "</svg>",
+    funnel:
+      '<svg viewBox="0 0 200 160" role="img" aria-label="Revenue intelligence funnel">' +
+        '<g class="illu-float">' +
+          '<path d="M48 46 H152 L116 96 V132 L84 116 V96 Z" fill="rgba(31,107,255,.08)" stroke="#1f6bff" stroke-width="3.4" stroke-linejoin="round"/>' +
+        "</g>" +
+        '<g stroke="#12a150" stroke-width="4" stroke-linecap="round">' +
+          '<line class="illu-drop" x1="86" y1="28" x2="86" y2="36"/>' +
+          '<line class="illu-drop" style="animation-delay:.5s" x1="100" y1="24" x2="100" y2="32"/>' +
+          '<line class="illu-drop" style="animation-delay:1s" x1="114" y1="28" x2="114" y2="36"/>' +
+        "</g>" +
+      "</svg>"
+  };
+  function illu(type) { return ILLU[type] || ILLU.cloud; }
+
+  /* ---------- header (nav only, no banner) ---------- */
   function renderHeader(page) {
     var nav = D.navigation || { links: [], cta: "Get Started" };
     var activeMap = { home: "/", services: "/services", frameworks: "/frameworks", about: "/about", contact: "/contact" };
@@ -38,22 +101,8 @@
       return '<a href="' + l.href + '"' + (isActive ? ' class="is-active"' : "") + ">" + l.label + "</a>";
     }).join("");
     var mobLinks = nav.links.map(function (l) { return '<a href="' + l.href + '">' + l.label + "</a>"; }).join("");
-
-    var banner = "";
-    var b = D.site && D.site.banner;
-    var dismissed = false;
-    try { dismissed = window.localStorage.getItem("soamiq_banner_dismissed") === "1"; } catch (e) {}
-    if (b && !dismissed) {
-      banner =
-        '<div class="topbar" id="topbar"><div class="container topbar__inner">' +
-          "<span>" + b.text + ' <a href="' + b.href + '">' + b.linkLabel + ' &rarr;</a></span>' +
-          '<button class="topbar__close" id="topbarClose" aria-label="Dismiss announcement">&times;</button>' +
-        "</div></div>";
-    }
-
     return (
       '<div class="progress" id="progress" aria-hidden="true"></div>' +
-      banner +
       '<header class="nav" id="nav">' +
         '<div class="container nav__inner">' +
           '<a href="/" aria-label="' + (D.site.brand || "Soamiq") + ' home">' + brandMarkup() + "</a>" +
@@ -100,20 +149,20 @@
   function heroSection() {
     var x = D.hero;
     var layers = x.systemLayers.map(function (l, i) {
-      return '<div class="layer reveal" data-anim="left"><span class="layer__idx">0' + (i + 1) + '</span><span class="layer__name">' + l + "</span></div>";
+      return '<div class="layer"><span class="layer__idx">0' + (i + 1) + '</span><span class="layer__name">' + l + "</span></div>";
     }).join("");
     var proof = x.proofPoints.map(function (p) {
       return "<div><dt class=\"grad-text\">" + p.value + "</dt><dd>" + p.label + "</dd></div>";
     }).join("");
     return (
       '<section class="hero">' +
-        '<span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
-        '<span class="hero__orb hero__orb--2" data-parallax="0.1" aria-hidden="true"></span>' +
+        '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
+        '<span class="hero__orb hero__orb--2" aria-hidden="true"></span>' +
         '<div class="container hero__inner">' +
           "<div>" +
             '<span class="chip reveal"><span class="dot"></span>' + x.eyebrow + "</span>" +
             '<h1 class="hero__title reveal" data-anim="up" style="margin-top:22px">' + x.title +
-              '<span class="hero__type"><span class="hero__type-mark" id="typewriter"></span><span class="hero__caret" aria-hidden="true"></span></span>' +
+              '<span class="hero__type"><span id="typewriter"></span><span class="hero__caret" aria-hidden="true"></span></span>' +
             "</h1>" +
             '<p class="hero__desc reveal" data-anim="up">' + x.description + "</p>" +
             '<div class="hero__cta reveal" data-anim="up">' +
@@ -122,11 +171,11 @@
             "</div>" +
             '<dl class="hero__proof reveal" data-anim="up">' + proof + "</dl>" +
           "</div>" +
-          '<div class="panel reveal" data-anim="scale">' +
+          '<div class="panel">' +
             '<div class="panel__top"><span class="panel__eyebrow">' + x.panelEyebrow + '</span>' +
               '<span class="panel__status"><span class="dot"></span>' + x.panelStatus + "</span></div>" +
             '<h3 class="panel__title">' + x.panelTitle + "</h3>" +
-            '<div class="panel__layers" data-stagger>' + layers + "</div>" +
+            '<div class="panel__layers">' + layers + "</div>" +
             '<p class="panel__note">' + x.systemLayerNote + "</p>" +
           "</div>" +
         "</div>" +
@@ -204,11 +253,11 @@
     );
   }
 
-  function storyVisual(glyph) {
+  function storyVisual(svg) {
     return (
       '<div class="story__visual">' +
         '<div class="story__rings" aria-hidden="true"><span></span><span></span><span></span></div>' +
-        '<span class="story__glyph grad-text">' + glyph + "</span>" +
+        '<div class="story__illu" aria-hidden="true">' + svg + "</div>" +
       "</div>"
     );
   }
@@ -222,7 +271,7 @@
             '<div class="story__index">Domain ' + pad2(i + 1) + " / " + pad2(ind.items.length) + "</div>" +
             "<h3>" + it.title + "</h3><p>" + it.description + "</p>" +
           "</div>" +
-          storyVisual(glyphOf(it.title)) +
+          storyVisual(illu(it.icon)) +
         "</article>"
       );
     }).join("");
@@ -299,7 +348,7 @@
   function pageHero(title, desc) {
     return (
       '<section class="page-hero">' +
-        '<span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
+        '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
         '<div class="container"><h1 class="reveal" data-anim="up">' + title + "</h1>" +
           (desc ? '<p class="reveal" data-anim="up">' + desc + "</p>" : "") + "</div>" +
       "</section>"
@@ -329,7 +378,7 @@
               '<div class="story__tags"><span>' + it.status + "</span></div>" +
               '<div style="margin-top:24px"><a class="btn btn--primary" href="' + it.href + '">Explore ' + it.name + " &rarr;</a></div>" +
             "</div>" +
-            storyVisual(glyphOf(it.name)) +
+            storyVisual(illu(it.icon)) +
           "</article>"
         );
       }).join("");
@@ -396,8 +445,8 @@
       var outs = g.outcomes.map(function (o) { return '<span class="pill reveal" data-anim="scale">' + o + "</span>"; }).join("");
       return (
         '<section class="page-hero">' +
-          '<span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
-          '<span class="hero__orb hero__orb--2" data-parallax="0.1" aria-hidden="true"></span>' +
+          '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
+          '<span class="hero__orb hero__orb--2" aria-hidden="true"></span>' +
           '<div class="container">' +
             '<span class="chip reveal"><span class="dot"></span>' + g.eyebrow + "</span>" +
             '<h1 class="reveal" data-anim="up" style="margin-top:20px">' + g.title + "</h1>" +
@@ -434,7 +483,7 @@
       if (!uc) return pageHero("Use case not found", "Please return to the services page.");
       var outs = uc.outcomes.map(function (o) { return "<li>" + o + "</li>"; }).join("");
       return (
-        '<section class="page-hero"><span class="hero__orb hero__orb--1" data-parallax="0.06" aria-hidden="true"></span>' +
+        '<section class="page-hero"><span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
           '<div class="container">' +
             '<span class="chip reveal"><span class="dot"></span>' + uc.category + " &middot; " + uc.status + "</span>" +
             '<h1 class="reveal" data-anim="up" style="margin-top:20px">' + uc.title + "</h1>" +
@@ -480,16 +529,6 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-    // banner dismiss
-    var close = document.getElementById("topbarClose");
-    if (close) {
-      close.addEventListener("click", function () {
-        var bar = document.getElementById("topbar");
-        if (bar) bar.style.display = "none";
-        try { window.localStorage.setItem("soamiq_banner_dismissed", "1"); } catch (e) {}
-      });
-    }
-
     // mobile menu
     var toggle = document.getElementById("navToggle");
     var mobile = document.getElementById("navMobile");
@@ -505,8 +544,9 @@
 
     // staggered reveal delays
     document.querySelectorAll("[data-stagger]").forEach(function (group) {
-      var kids = group.querySelectorAll(":scope > .reveal");
-      kids.forEach(function (el, i) { el.style.transitionDelay = (i * 0.09) + "s"; });
+      group.querySelectorAll(":scope > .reveal").forEach(function (el, i) {
+        el.style.transitionDelay = (i * 0.09) + "s";
+      });
     });
 
     // reveal observer
@@ -520,24 +560,6 @@
       revealEls.forEach(function (el) { io.observe(el); });
     } else {
       revealEls.forEach(function (el) { el.classList.add("is-visible"); });
-    }
-
-    // parallax
-    var pxEls = Array.prototype.slice.call(document.querySelectorAll("[data-parallax]"));
-    if (pxEls.length && !reduceMotion) {
-      var ticking = false;
-      var update = function () {
-        var vh = window.innerHeight;
-        pxEls.forEach(function (el) {
-          var r = el.getBoundingClientRect();
-          var off = (r.top + r.height / 2) - vh / 2;
-          var speed = parseFloat(el.getAttribute("data-parallax")) || 0.05;
-          el.style.transform = "translate3d(0," + (off * -speed).toFixed(1) + "px,0)";
-        });
-        ticking = false;
-      };
-      window.addEventListener("scroll", function () { if (!ticking) { window.requestAnimationFrame(update); ticking = true; } }, { passive: true });
-      update();
     }
 
     // typewriter

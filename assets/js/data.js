@@ -15,12 +15,7 @@ window.SOAMIQ = {
     "typewriterTaglines": [
       "Trust Data. Trust AI.",
       "Build Smarter. Build Optimized."
-    ],
-    "banner": {
-      "text": "Introducing GAURI — Agentic AI revenue intelligence.",
-      "linkLabel": "Learn more",
-      "href": "/gauri"
-    }
+    ]
   },
   "location": {
     "label": "Headquarters",
@@ -190,12 +185,12 @@ window.SOAMIQ = {
     "title": "Where Soamiq Helps",
     "description": "Founding members of Soamiq bring delivery depth across data-heavy domains where reporting quality, operational context, and trusted intelligence matter.",
     "items": [
-      { "title": "Banking and Financial Services", "description": "Reporting, portfolio intelligence, risk views, operational analytics, and data products for regulated financial environments." },
-      { "title": "Insurance", "description": "Claims analytics, policy intelligence, distribution reporting, operational dashboards, and knowledge-backed assistants." },
-      { "title": "Retail", "description": "Sales reporting, demand analytics, inventory intelligence, customer segmentation, and store performance insights." },
-      { "title": "Consumer Packaged Goods", "description": "Distribution intelligence, sales-cycle reporting, channel analytics, forecasting, and market performance dashboards." },
-      { "title": "Gaming", "description": "Player analytics, engagement and retention intelligence, monetization reporting, and live-ops decision support." },
-      { "title": "New Age Cloud Platforms", "description": "Cloud-native data foundations, platform analytics, usage intelligence, and AI systems for modern SaaS and cloud businesses." }
+      { "icon": "bank", "title": "Banking and Financial Services", "description": "Reporting, portfolio intelligence, risk views, operational analytics, and data products for regulated financial environments." },
+      { "icon": "shield", "title": "Insurance", "description": "Claims analytics, policy intelligence, distribution reporting, operational dashboards, and knowledge-backed assistants." },
+      { "icon": "retail", "title": "Retail", "description": "Sales reporting, demand analytics, inventory intelligence, customer segmentation, and store performance insights." },
+      { "icon": "box", "title": "Consumer Packaged Goods", "description": "Distribution intelligence, sales-cycle reporting, channel analytics, forecasting, and market performance dashboards." },
+      { "icon": "game", "title": "Gaming", "description": "Player analytics, engagement and retention intelligence, monetization reporting, and live-ops decision support." },
+      { "icon": "cloud", "title": "New Age Cloud Platforms", "description": "Cloud-native data foundations, platform analytics, usage intelligence, and AI systems for modern SaaS and cloud businesses." }
     ]
   },
   "caseStudies": {
@@ -274,7 +269,7 @@ window.SOAMIQ = {
     "title": "Frameworks",
     "description": "Reusable Soamiq solution frameworks for building AI-native business systems. GAURI is the first framework, with more frameworks planned as Soamiq expands.",
     "items": [
-      { "name": "GAURI", "label": "Growth Acceleration Using Revenue Intelligence", "description": "An Agentic AI powered revenue intelligence framework for improving sales funnels, lead intelligence, account research, and sales-cycle movement.", "href": "/gauri", "status": "Active framework" }
+      { "name": "GAURI", "icon": "funnel", "label": "Growth Acceleration Using Revenue Intelligence", "description": "An Agentic AI powered revenue intelligence framework for improving sales funnels, lead intelligence, account research, and sales-cycle movement.", "href": "/gauri", "status": "Active framework" }
     ]
   },
   "useCases": {
