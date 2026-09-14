@@ -169,6 +169,7 @@
               '<a href="' + x.primaryHref + '" class="btn btn--primary">' + x.primaryCta + "</a>" +
               '<a href="' + (x.secondaryHref || "/gauri") + '" class="btn btn--ghost">' + (x.secondaryCta || "Explore GAURI") + "</a>" +
             "</div>" +
+            /* hero.proofPoints quarantined — no metric chips on Home */
           "</div>" +
           '<div class="hero-apple__media reveal" data-anim="scale" aria-hidden="true">' +
             '<div class="hero-apple__object-ring"></div>' +
@@ -249,6 +250,7 @@
   }
 
   function homeProofStage() {
+    // Home proof cards only — never hero.proofPoints or about.stats metric chips.
     var a = D.about || {};
     var strengths = (a.strengths || []).map(function (s) {
       return (
@@ -499,8 +501,9 @@
   /* ---------- page renderers ---------- */
   var pages = {
     home: function () {
-      // Immersive hero → light highlights → sticky GAURI → light proof → white Action
-      return homeHeroStage() + homeHighlightTiles() + homeGauriSticky() + homeProofStage() + homeActionBand();
+      // Immersive hero → light highlights → sticky GAURI → light proof → FAQ → white Action
+      // hero.proofPoints are quarantined and must not render here.
+      return homeHeroStage() + homeHighlightTiles() + homeGauriSticky() + homeProofStage() + faqSection() + homeActionBand();
     },
     services: function () {
       return pageHero(D.services.title, D.services.description) +
@@ -611,6 +614,17 @@
         return '<article class="principle reveal" data-anim="up"><h3>' + p.title + "</h3><p>" + p.description + "</p></article>";
       }).join("");
       var outs = (g.outcomes || []).map(function (o) { return '<span class="pill reveal" data-anim="scale">' + o + "</span>"; }).join("");
+      var path = g.path || {};
+      var pathChapter = path.title ? (
+        '<section class="tile tile--white gauri-path" aria-label="Path" id="path">' +
+          '<div class="container gauri-path__inner">' +
+            '<p class="eyebrow reveal">' + (path.eyebrow || "Path") + "</p>" +
+            '<h2 class="section__title reveal">' + path.title + "</h2>" +
+            '<p class="lede lede--center reveal">' + (path.body || "") + "</p>" +
+            (path.line ? '<p class="gauri-path__line reveal">' + path.line + "</p>" : "") +
+          "</div>" +
+        "</section>"
+      ) : "";
       return (
         '<section class="tile tile--immersive tile--lit page-hero stage--immersive" style="text-align:center">' +
           '<div class="container">' +
@@ -624,6 +638,7 @@
             "</div>" +
           "</div>" +
         "</section>" +
+        pathChapter +
         '<section class="tile tile--canvas" style="padding:0" aria-label="How it works" id="how-it-works">' +
           '<div class="container" style="padding-top:var(--section-y);padding-bottom:40px;text-align:center">' +
             '<p class="eyebrow reveal">Workflow</p>' +

@@ -42,10 +42,13 @@ window.SOAMIQ = {
       {
         "title": "Product",
         "links": [
-          { "label": "Capabilities", "href": "/capabilities" },
-          { "label": "GAURI", "href": "/gauri" },
-          { "label": "Agentic AI", "href": "/capabilities#agentic-ai" },
-          { "label": "Generative AI", "href": "/capabilities#generative-ai" }
+          { "label": "GAURI", "href": "/gauri" }
+        ]
+      },
+      {
+        "title": "Capabilities",
+        "links": [
+          { "label": "Capabilities", "href": "/capabilities" }
         ]
       },
       {
@@ -73,7 +76,7 @@ window.SOAMIQ = {
     "eyebrow": "Soamiq Labs",
     "kicker": "Trust Data. Trust AI.",
     "title": "Trust Data. Trust AI.",
-    "description": "Intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence.",
+    "description": "Agents and intelligence on a foundation you can defend.",
     "primaryCta": "Talk to us",
     "primaryHref": "/contact",
     "secondaryCta": "Explore GAURI",
@@ -87,6 +90,7 @@ window.SOAMIQ = {
       "Trusted data foundation"
     ],
     "systemLayerNote": "Connected to metrics, context, and execution.",
+    // Quarantined from Home — do not render these metric chips on the homepage.
     "proofPoints": [
       { "value": "120+", "label": "Projects associated with founding members" },
       { "value": "9+", "label": "Years of data and AI delivery depth" },
@@ -109,15 +113,15 @@ window.SOAMIQ = {
         "description": "LLM-powered systems turn documents, policies, domain knowledge, and business context into useful intelligence and recommendations."
       },
       {
-        "label": "Data Engineering",
-        "title": "A trusted foundation underneath it all.",
-        "description": "Scalable data foundations power analytics, automation, reporting, and AI systems with reliable metrics and governance."
+        "label": "Trusted data layer",
+        "title": "Definitions, pipelines, and architecture before agents.",
+        "description": "Engineering, modelling, BI, and architecture — so AI runs on shared truth."
       }
     ]
   },
   "services": {
     "title": "Capabilities",
-    "description": "Sparse chapters across agents, generative systems, and the data stack that makes them trustworthy. GAURI is the product — linked below, not a capability chapter.",
+    "description": "Six capabilities. One product — GAURI — linked below.",
     "items": [
       {
         "tag": "01",
@@ -207,7 +211,7 @@ window.SOAMIQ = {
       "Soamiq is governed by its directors, with specialist leads for agentic AI and data engineering. Team members associated with the company have delivered across 120+ projects over 9+ years, with 1.5+ years focused specifically on Agentic AI and Generative AI, spanning retail, consumer packaged goods, insurance, banking and financial services, gaming, and new age cloud platforms."
     ],
     "strengths": [
-      { "title": "Proven Track Record", "description": "Founding members of Soamiq have been associated with 120+ projects across 9+ years." },
+      { "title": "Domain-grounded delivery", "description": "Founding team depth across BFSI, insurance, retail, CPG, gaming, and cloud — applied to trusted data and agent systems." },
       { "title": "Domain Depth", "description": "Experience across retail, CPG, insurance, banking and financial services, gaming, and new age cloud platforms." },
       { "title": "AI-Native Business Systems", "description": "Soamiq builds AI-native systems powered by autonomous agents, enterprise data, and domain intelligence." }
     ],
@@ -233,8 +237,8 @@ window.SOAMIQ = {
     "description": "A few practical answers for teams considering an AI or data engagement.",
     "items": [
       { "question": "What is Soamiq focused on?", "answer": "Soamiq builds intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence across Agentic AI, Generative AI, Data Engineering, Data Modelling, BI, and Data Architecture." },
-      { "question": "What is GAURI?", "answer": "GAURI stands for Growth Acceleration Using Revenue Intelligence. It is an Agentic AI powered revenue intelligence framework for improving sales funnels and sales-cycle movement, used as the Soamiq Clay agency platform." },
-      { "question": "Do you only build MCPs for agentic solutions?", "answer": "No. MCPs and tool integrations are one layer. Soamiq also intends to build knowledge graphs so agents can use richer business context and provide more accurate answers." },
+      { "question": "What is GAURI?", "answer": "GAURI (Growth Acceleration Using Revenue Intelligence) is Soamiq’s path to governed revenue agents — systems that forecast, qualify, and work deals with audit, delegation limits, and examiner-defensible evidence." },
+      { "question": "Do you only build MCPs for agentic solutions?", "answer": "Tool integrations (including MCP) are one layer. Where the domain needs it, we ground agents in knowledge graphs and governed context — not documents alone." },
       { "question": "Which domains does Soamiq understand?", "answer": "Founding members of Soamiq bring experience across retail, consumer packaged goods, insurance, banking and financial services, gaming, and new age cloud platforms." }
     ]
   },
@@ -247,11 +251,17 @@ window.SOAMIQ = {
     "oneLiner": "We don’t sell AI that talks about your pipeline. We sell revenue agents that can act — and that you can defend.",
     "howItWorksTitle": "Discover → Understand → Prioritize → Activate",
     "howItWorksDescription": "A clear revenue workflow before enterprise RI spend — clean data and governed agents beat a flashy layer on inconsistent deals.",
+    "path": {
+      "eyebrow": "Path",
+      "title": "Notion CRM → trusted revenue data → GAURI",
+      "body": "Don’t buy heavyweight revenue intelligence on dirty pipeline data. Start from the system of record you already run, make definitions and ownership trustworthy, then put governed agents on top.",
+      "line": "Clean data and governed agents beat a flashy layer on inconsistent deals."
+    },
     "stages": [
       { "title": "Discover", "description": "Identify high-fit accounts, buying signals, business triggers, and market segments worth pursuing." },
-      { "title": "Understand", "description": "Convert account, contact, domain, and context data into revenue intelligence your team can act on." },
+      { "title": "Understand", "description": "Turn CRM and domain context into attributable revenue intelligence — clear inputs, clear ownership." },
       { "title": "Prioritize", "description": "Score opportunities using firmographic, intent, role, timing, and fit signals." },
-      { "title": "Activate", "description": "Move the funnel with agent-assisted research, messaging context, follow-up logic, and next-best actions." }
+      { "title": "Activate", "description": "Act on revenue workflows within policy — with evidence packs, approval expiry, and shutdown controls." }
     ],
     "governedTitle": "Governed agents vs copilots",
     "governedDescription": "Most “AI for sales” drafts and suggests. GAURI is built so leadership and risk can answer: who decided, under what limit, with what evidence — and can we shut it off?",
@@ -326,10 +336,10 @@ window.SOAMIQ = {
   },
   "contact": {
     "title": "Get in Touch",
-    "description": "Ready to transform your business? Let us talk about your project.",
+    "description": "Tell us about the workflow or decision you need to trust.",
     "details": {
       "title": "Contact Information",
-      "description": "Reach out to our team to discuss your AI, data science, or data engineering needs.",
+      "description": "Agentic AI, generative systems, or the data layer underneath.",
       "email": { "label": "Email", "value": "hello@soamiq.ai", "href": "mailto:hello@soamiq.ai", "tag": "Mail" },
       "phone": null,
       "address": { "label": "Headquarters", "tag": "HQ" },
