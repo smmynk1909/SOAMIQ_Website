@@ -514,87 +514,87 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
 .cta-band .hero-apple__cta { justify-content: center; }
 
 /* ============================================================
-   Sticky storytelling (GAURI how-it-works)
+   GAURI steps — visual | copy, alternate L/R (no duplicated title/body)
    ============================================================ */
-.sticky-story {
+.gauri-steps {
   position: relative;
+}
+.gauri-step {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  min-height: 100vh;
+  min-height: calc(100svh - var(--nav-h));
+  background: var(--bg-canvas);
 }
-.sticky-story__media {
-  position: sticky;
-  top: var(--nav-h);
-  height: calc(100svh - var(--nav-h));
-  display: flex; align-items: center; justify-content: center;
+.gauri-step[data-side="media-end"] .gauri-step__media { order: 2; }
+.gauri-step[data-side="media-end"] .gauri-step__copy { order: 1; }
+.gauri-step__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 48px var(--gutter);
   background: var(--bg-immersive);
   color: var(--ink-on-dark);
+  position: relative;
   overflow: hidden;
 }
-.sticky-story__media::before {
+.gauri-step__media::before {
   content: "";
   position: absolute; inset: 0; pointer-events: none;
   background:
     radial-gradient(ellipse 70% 50% at 40% 30%, rgba(43,181,168,0.16), transparent 55%),
     radial-gradient(ellipse 50% 40% at 90% 90%, rgba(255,255,255,0.04), transparent 50%);
 }
-.sticky-story__panel {
+.gauri-step__panel {
   position: relative; z-index: 1;
-  width: 100%; max-width: 420px;
+  width: 100%; max-width: 360px;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius-l);
   border: 1px solid var(--line-on-dark);
   background: linear-gradient(180deg, #2a2b31, #16171b);
   box-shadow: var(--shadow-media);
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 40px 32px;
-  text-align: left;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 36px 28px;
+  text-align: center;
 }
-.sticky-story__step-label {
-  font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--accent-bright); margin-bottom: 12px;
+.gauri-step__mark {
+  font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent-bright); font-weight: 600;
+  margin-bottom: 8px;
 }
-.sticky-story__step-title {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  letter-spacing: -0.02em;
-  margin-bottom: 12px;
+.gauri-step__diagram {
+  width: 100%; max-width: 220px;
 }
-.sticky-story__step-body {
-  color: var(--muted-on-dark); font-size: 1rem; line-height: 1.47;
+.gauri-step__diagram svg { width: 100%; height: auto; overflow: visible; }
+.gauri-step__ticks {
+  display: flex; gap: 8px; margin-top: 20px;
 }
-.sticky-story__dots {
-  display: flex; gap: 8px; margin-top: 28px;
-}
-.sticky-story__dots span {
+.gauri-step__ticks span {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--line-on-dark-strong);
-  transition: background var(--med) var(--ease-out), transform var(--med) var(--ease-out);
 }
-.sticky-story__dots span.is-active {
+.gauri-step__ticks span.is-active {
   background: var(--accent-bright);
   transform: scale(1.25);
 }
-.sticky-story__copy {
+.gauri-step__copy {
+  display: flex; align-items: center; justify-content: flex-start;
+  padding: 80px var(--gutter);
   background: var(--bg-canvas);
   color: var(--ink);
 }
-.sticky-story__chapter {
-  min-height: calc(100svh - var(--nav-h));
-  display: flex; align-items: center;
-  padding: 80px var(--gutter);
-  border-bottom: 1px solid var(--line);
-}
-.sticky-story__chapter:last-child { border-bottom: 0; }
-.sticky-story__chapter-inner { max-width: 420px; }
-.sticky-story__chapter .eyebrow { color: var(--accent); }
-.sticky-story__chapter h3 {
+.gauri-step[data-side="media-end"] .gauri-step__copy { justify-content: flex-end; }
+.gauri-step:nth-child(even) .gauri-step__copy { background: var(--bg-parchment); }
+.gauri-step__copy-inner { max-width: 420px; }
+.gauri-step__copy .eyebrow { color: var(--accent); }
+.gauri-step__copy h3 {
   font-size: clamp(1.6rem, 3vw, 2.1rem);
   margin-bottom: 14px;
   letter-spacing: -0.02em;
 }
-.sticky-story__chapter p { color: var(--muted); font-size: 1.05rem; }
+.gauri-step__copy p { color: var(--muted); font-size: 1.05rem; }
+
+/* Legacy sticky-story hooks (spy rail still uses chapter class) */
+.sticky-story { position: relative; }
 
 /* Chapter spy rail (optional) */
 .spy-rail {
@@ -1111,12 +1111,14 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
   .highlight-grid { grid-template-columns: 1fr; }
   .highlight-card { border-right: 0; border-bottom: 1px solid var(--line); }
   .highlight-card:last-child { border-bottom: 0; }
-  .sticky-story { grid-template-columns: 1fr; }
-  .sticky-story__media {
-    position: relative; top: 0; height: auto; min-height: 50vh;
-    padding: 48px var(--gutter);
-  }
-  .sticky-story__chapter { min-height: auto; padding: 56px var(--gutter); }
+  .gauri-step { grid-template-columns: 1fr; min-height: 0; }
+  .gauri-step[data-side="media-end"] .gauri-step__media,
+  .gauri-step[data-side="media-end"] .gauri-step__copy,
+  .gauri-step__media,
+  .gauri-step__copy { order: 0; }
+  .gauri-step__media { min-height: 42vh; padding: 48px var(--gutter); }
+  .gauri-step__copy { padding: 56px var(--gutter); justify-content: flex-start !important; }
+  .gauri-step__panel { aspect-ratio: auto; max-width: 280px; padding: 28px 22px; }
   .cap-chapter__inner { grid-template-columns: 1fr; gap: 28px; }
   .hero__inner { grid-template-columns: 1fr; gap: 40px; }
   .cards, .stages { grid-template-columns: repeat(2, 1fr); }
@@ -1155,7 +1157,7 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
   * { scroll-behavior: auto !important; }
   .reveal { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
   .strip__track, .hero__caret { animation: none !important; }
-  .sticky-story__media { position: relative; top: 0; height: auto; min-height: 40vh; }
+  .gauri-step__media { position: relative; top: 0; height: auto; min-height: 40vh; }
 }
 
 .ns { padding: 40px 28px; color: var(--muted); }

@@ -258,10 +258,10 @@ window.SOAMIQ = {
       "line": "Clean data and governed agents beat a flashy layer on inconsistent deals."
     },
     "stages": [
-      { "title": "Discover", "description": "Identify high-fit accounts, buying signals, business triggers, and market segments worth pursuing." },
-      { "title": "Understand", "description": "Turn CRM and domain context into attributable revenue intelligence — clear inputs, clear ownership." },
-      { "title": "Prioritize", "description": "Score opportunities using firmographic, intent, role, timing, and fit signals." },
-      { "title": "Activate", "description": "Act on revenue workflows within policy — with evidence packs, approval expiry, and shutdown controls." }
+      { "title": "Discover", "visual": "discover", "description": "Identify high-fit accounts, buying signals, business triggers, and market segments worth pursuing." },
+      { "title": "Understand", "visual": "understand", "description": "Turn CRM and domain context into attributable revenue intelligence — clear inputs, clear ownership." },
+      { "title": "Prioritize", "visual": "prioritize", "description": "Score opportunities using firmographic, intent, role, timing, and fit signals." },
+      { "title": "Activate", "visual": "activate", "description": "Act on revenue workflows within policy — with evidence packs, approval expiry, and shutdown controls." }
     ],
     "governedTitle": "Governed agents vs copilots",
     "governedDescription": "Most “AI for sales” drafts and suggests. GAURI is built so leadership and risk can answer: who decided, under what limit, with what evidence — and can we shut it off?",

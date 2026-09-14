@@ -98,6 +98,51 @@
   };
   function illu(type) { return ILLU[type] || ILLU.cloud; }
 
+  /* Stage diagrams — visual-only (no title/body copy). Teal on immersive. */
+  var STAGE_ILLU = {
+    discover:
+      '<svg viewBox="0 0 200 160" role="img" aria-hidden="true">' +
+        '<g fill="none" stroke="#2bb5a8" stroke-linecap="round">' +
+          '<circle cx="100" cy="82" r="22" stroke-width="2.6" opacity=".95"/>' +
+          '<circle class="illu-pulse" cx="100" cy="82" r="40" stroke-width="2" opacity=".55"/>' +
+          '<circle cx="100" cy="82" r="58" stroke-width="1.6" opacity=".28"/>' +
+        "</g>" +
+        '<circle class="illu-pulse" cx="148" cy="52" r="5" fill="#2bb5a8"/>' +
+        '<circle cx="58" cy="64" r="4" fill="rgba(245,245,247,.85)"/>' +
+        '<circle cx="128" cy="118" r="4" fill="rgba(245,245,247,.7)"/>' +
+      "</svg>",
+    understand:
+      '<svg viewBox="0 0 200 160" role="img" aria-hidden="true">' +
+        '<g fill="none" stroke="#2bb5a8" stroke-width="2.4" stroke-linecap="round">' +
+          '<line x1="100" y1="46" x2="58" y2="88"/><line x1="100" y1="46" x2="142" y2="88"/>' +
+          '<line x1="58" y1="88" x2="100" y2="122"/><line x1="142" y1="88" x2="100" y2="122"/>' +
+          '<line x1="58" y1="88" x2="142" y2="88"/>' +
+        "</g>" +
+        '<circle cx="100" cy="46" r="8" fill="#2bb5a8"/>' +
+        '<circle cx="58" cy="88" r="7" fill="rgba(245,245,247,.9)"/>' +
+        '<circle cx="142" cy="88" r="7" fill="rgba(245,245,247,.9)"/>' +
+        '<circle class="illu-pulse" cx="100" cy="122" r="8" fill="#2bb5a8"/>' +
+      "</svg>",
+    prioritize:
+      '<svg viewBox="0 0 200 160" role="img" aria-hidden="true">' +
+        '<g fill="rgba(43,181,168,.16)" stroke="#2bb5a8" stroke-width="2.4" stroke-linejoin="round">' +
+          '<rect x="46" y="92" width="28" height="36" rx="6"/>' +
+          '<rect x="86" y="68" width="28" height="60" rx="6"/>' +
+          '<rect x="126" y="40" width="28" height="88" rx="6" fill="rgba(43,181,168,.32)"/>' +
+        "</g>" +
+        '<circle class="illu-pulse" cx="140" cy="32" r="4.5" fill="#2bb5a8"/>' +
+      "</svg>",
+    activate:
+      '<svg viewBox="0 0 200 160" role="img" aria-hidden="true">' +
+        '<rect x="54" y="38" width="92" height="92" rx="22" fill="rgba(43,181,168,.12)" stroke="#2bb5a8" stroke-width="2.6"/>' +
+        '<polyline class="illu-draw" points="78,86 96,104 128,68" fill="none" stroke="#2bb5a8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>' +
+      "</svg>"
+  };
+  function stageIllu(key) {
+    var k = String(key || "").toLowerCase();
+    return STAGE_ILLU[k] || STAGE_ILLU.discover;
+  }
+
   /* ---------- header (nav only, no banner) ---------- */
   function renderHeader(page) {
     var nav = D.navigation || { links: [], cta: "Get Started" };
@@ -206,24 +251,51 @@
     );
   }
 
-  function homeGauriSticky() {
-    var g = D.gauri;
+  /* GAURI steps: one side visual (mark + diagram), other side copy only. Alternate L/R. */
+  function gauriStepsStory(opts) {
+    opts = opts || {};
+    var g = D.gauri || {};
     var stages = g.stages || [];
-    var chapters = stages.map(function (s, i) {
-      return (
-        '<div class="sticky-story__chapter" data-chapter="' + slugify(s.title) + '" data-step="' + i + '">' +
-          '<div class="sticky-story__chapter-inner reveal" data-anim="up">' +
-            '<p class="eyebrow">0' + (i + 1) + " — " + s.title + "</p>" +
+    var total = stages.length;
+    var steps = stages.map(function (s, i) {
+      var side = i % 2 === 0 ? "media-start" : "media-end";
+      var ticks = "";
+      var t;
+      for (t = 0; t < total; t++) {
+        ticks += "<span" + (t === i ? ' class="is-active"' : "") + "></span>";
+      }
+      var kicker = s.kicker
+        ? '<p class="eyebrow">' + s.kicker + "</p>"
+        : "";
+      var visual =
+        '<div class="gauri-step__media" aria-hidden="true">' +
+          '<div class="gauri-step__panel">' +
+            '<div class="gauri-step__mark">' + pad2(i + 1) + "</div>" +
+            '<div class="gauri-step__diagram">' + stageIllu(s.visual || s.title) + "</div>" +
+            '<div class="gauri-step__ticks">' + ticks + "</div>" +
+          "</div>" +
+        "</div>";
+      var copy =
+        '<div class="gauri-step__copy">' +
+          '<div class="gauri-step__copy-inner reveal" data-anim="up">' +
+            kicker +
             "<h3>" + s.title + "</h3>" +
             "<p>" + s.description + "</p>" +
           "</div>" +
-        "</div>"
+        "</div>";
+      return (
+        '<article class="gauri-step sticky-story__chapter" data-side="' + side +
+          '" data-chapter="' + slugify(s.title) + '" data-step="' + i + '"' +
+          (opts.ids ? ' id="stage-' + slugify(s.title) + '"' : "") + ">" +
+          visual + copy +
+        "</article>"
       );
     }).join("");
-    var dots = stages.map(function (_, i) {
-      return '<span' + (i === 0 ? ' class="is-active"' : "") + ' data-dot="' + i + '"></span>';
-    }).join("");
-    var first = stages[0] || { title: "Discover", description: "" };
+    return '<div class="gauri-steps sticky-story" id="gauriSticky">' + steps + "</div>";
+  }
+
+  function homeGauriSticky() {
+    var g = D.gauri;
     return (
       '<section class="tile tile--canvas" style="padding:0" aria-label="How GAURI works" id="how-gauri">' +
         '<div class="container" style="padding-top:var(--section-y);padding-bottom:40px;text-align:center">' +
@@ -231,17 +303,7 @@
           '<h2 class="section__title reveal">' + (g.howItWorksTitle || "Discover → Understand → Prioritize → Activate") + "</h2>" +
           '<p class="lede lede--center reveal">' + (g.howItWorksDescription || "") + "</p>" +
         "</div>" +
-        '<div class="sticky-story" id="gauriSticky">' +
-          '<div class="sticky-story__media" aria-hidden="true">' +
-            '<div class="sticky-story__panel" id="gauriStickyPanel">' +
-              '<div class="sticky-story__step-label">Step</div>' +
-              '<div class="sticky-story__step-title" id="gauriStickyTitle">' + first.title + "</div>" +
-              '<div class="sticky-story__step-body" id="gauriStickyBody">' + first.description + "</div>" +
-              '<div class="sticky-story__dots" id="gauriStickyDots">' + dots + "</div>" +
-            "</div>" +
-          "</div>" +
-          '<div class="sticky-story__copy">' + chapters + "</div>" +
-        "</div>" +
+        gauriStepsStory() +
         '<div class="container" style="padding:48px var(--gutter) var(--section-y);text-align:center">' +
           '<a href="/gauri" class="btn btn--primary">Explore GAURI</a>' +
         "</div>" +
@@ -588,21 +650,6 @@
     gauri: function () {
       var g = D.gauri;
       var stages = g.stages || [];
-      var chapters = stages.map(function (s, i) {
-        return (
-          '<div class="sticky-story__chapter" data-chapter="' + slugify(s.title) + '" data-step="' + i + '" id="stage-' + slugify(s.title) + '">' +
-            '<div class="sticky-story__chapter-inner reveal" data-anim="up">' +
-              '<p class="eyebrow">0' + (i + 1) + " — " + s.title + "</p>" +
-              "<h3>" + s.title + "</h3>" +
-              "<p>" + s.description + "</p>" +
-            "</div>" +
-          "</div>"
-        );
-      }).join("");
-      var dots = stages.map(function (_, i) {
-        return '<span' + (i === 0 ? ' class="is-active"' : "") + ' data-dot="' + i + '"></span>';
-      }).join("");
-      var first = stages[0] || { title: "Discover", description: "" };
       var spy = stages.map(function (s) {
         return '<a href="#stage-' + slugify(s.title) + '">' + s.title + "</a>";
       }).join("");
@@ -645,17 +692,7 @@
             '<h2 class="section__title reveal">' + g.howItWorksTitle + '</h2>' +
             '<p class="lede lede--center reveal">' + g.howItWorksDescription + "</p>" +
           "</div>" +
-          '<div class="sticky-story" id="gauriSticky">' +
-            '<div class="sticky-story__media" aria-hidden="true">' +
-              '<div class="sticky-story__panel" id="gauriStickyPanel">' +
-                '<div class="sticky-story__step-label">Step</div>' +
-                '<div class="sticky-story__step-title" id="gauriStickyTitle">' + first.title + "</div>" +
-                '<div class="sticky-story__step-body" id="gauriStickyBody">' + first.description + "</div>" +
-                '<div class="sticky-story__dots" id="gauriStickyDots">' + dots + "</div>" +
-              "</div>" +
-            "</div>" +
-            '<div class="sticky-story__copy">' + chapters + "</div>" +
-          "</div>" +
+          gauriStepsStory({ ids: true }) +
           '<nav class="spy-rail" id="gauriSpyRail" aria-label="GAURI stages">' + spy + "</nav>" +
         "</section>" +
         (g.governedContrast && g.governedContrast.length ? (
@@ -790,33 +827,22 @@
       document.body.classList.add("has-immersive-hero");
     }
 
-    // Sticky storytelling panel sync
+    // GAURI steps: spy-rail only — title/body live on the copy side, not the visual mark.
     var stickyRoot = document.getElementById("gauriSticky");
     if (stickyRoot && "IntersectionObserver" in window) {
-      var titleEl = document.getElementById("gauriStickyTitle");
-      var bodyEl = document.getElementById("gauriStickyBody");
-      var dotsEl = document.getElementById("gauriStickyDots");
-      var chapters = stickyRoot.querySelectorAll(".sticky-story__chapter");
-      var stageData = ((D.gauri && D.gauri.stages) || []);
+      var chapters = stickyRoot.querySelectorAll(".sticky-story__chapter, .gauri-step");
       var setStep = function (idx) {
-        var s = stageData[idx];
-        if (!s) return;
-        if (titleEl) titleEl.textContent = s.title;
-        if (bodyEl) bodyEl.textContent = s.description;
-        if (dotsEl) {
-          dotsEl.querySelectorAll("span").forEach(function (d, i) {
-            d.classList.toggle("is-active", i === idx);
-          });
-        }
         var rail = document.getElementById("gauriSpyRail");
         if (rail) {
           rail.querySelectorAll("a").forEach(function (a, i) {
             a.classList.toggle("is-active", i === idx);
           });
         }
+        chapters.forEach(function (ch, i) {
+          ch.classList.toggle("is-active", i === idx);
+        });
       };
       if (reduceMotion) {
-        // Stack statically — panel shows first step only
         setStep(0);
       } else {
         var sio = new IntersectionObserver(function (entries) {
