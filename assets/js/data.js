@@ -234,7 +234,7 @@ window.SOAMIQ = {
     "items": [
       { "question": "What is Soamiq focused on?", "answer": "Soamiq builds intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence across Agentic AI, Generative AI, Data Engineering, Data Modelling, BI, and Data Architecture." },
       { "question": "What is GAURI?", "answer": "GAURI (Growth Acceleration Using Revenue Intelligence) is Soamiq’s path to governed revenue agents — systems that forecast, qualify, and work deals with audit, delegation limits, and examiner-defensible evidence." },
-      { "question": "Do you only build MCPs for agentic solutions?", "answer": "Tool integrations (including MCP) are one layer. Where the domain needs it, we ground agents in knowledge graphs and governed context — not documents alone." },
+      { "question": "Do you only build MCPs for agentic solutions?", "answer": "No. Tool integrations (including MCP) are one layer. Where the domain needs it, we ground agents in knowledge graphs and governed context — not documents alone." },
       { "question": "Which domains does Soamiq understand?", "answer": "Founding members of Soamiq bring experience across retail, consumer packaged goods, insurance, banking and financial services, gaming, and new age cloud platforms." }
     ]
   },
