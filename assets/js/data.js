@@ -31,8 +31,8 @@ window.SOAMIQ = {
     "cta": "Talk to us",
     "links": [
       { "label": "Home", "href": "/" },
-      { "label": "GAURI", "href": "/gauri" },
       { "label": "Capabilities", "href": "/capabilities" },
+      { "label": "GAURI", "href": "/gauri" },
       { "label": "About", "href": "/about" },
       { "label": "Contact", "href": "/contact" }
     ]
@@ -42,10 +42,10 @@ window.SOAMIQ = {
       {
         "title": "Product",
         "links": [
-          { "label": "GAURI", "href": "/gauri" },
           { "label": "Capabilities", "href": "/capabilities" },
-          { "label": "Agentic AI Systems", "href": "/capabilities#agentic-ai-systems" },
-          { "label": "Data Intelligence", "href": "/capabilities#data-intelligence-platform" }
+          { "label": "GAURI", "href": "/gauri" },
+          { "label": "Agentic AI", "href": "/capabilities#agentic-ai" },
+          { "label": "Generative AI", "href": "/capabilities#generative-ai" }
         ]
       },
       {
@@ -99,17 +99,17 @@ window.SOAMIQ = {
     "description": "Soamiq connects agents, generative intelligence, and trusted data foundations so teams can move from insight to execution.",
     "items": [
       {
-        "label": "Agentic AI Systems",
+        "label": "Agentic AI",
         "title": "Systems that execute, not just answer.",
         "description": "Autonomous agents coordinate workflows, decisions, and process steps across business tools with human oversight where it matters."
       },
       {
-        "label": "Generative Intelligence",
+        "label": "Generative AI",
         "title": "Knowledge becomes action.",
         "description": "LLM-powered systems turn documents, policies, domain knowledge, and business context into useful intelligence and recommendations."
       },
       {
-        "label": "Data Intelligence Platform",
+        "label": "Data Engineering",
         "title": "A trusted foundation underneath it all.",
         "description": "Scalable data foundations power analytics, automation, reporting, and AI systems with reliable metrics and governance."
       }
@@ -117,43 +117,43 @@ window.SOAMIQ = {
   },
   "services": {
     "title": "Capabilities",
-    "description": "Focused delivery across agents, generative intelligence, trusted data, migration, and domain consulting. GAURI is the product — linked below, not a service card.",
+    "description": "Sparse chapters across agents, generative systems, and the data stack that makes them trustworthy. GAURI is the product — linked below, not a capability chapter.",
     "items": [
       {
-        "tag": "A1",
-        "title": "Agentic AI Systems",
-        "description": "Autonomous systems that execute workflows, decisions, and business processes across teams and tools.",
-        "outcomes": ["Workflow execution agents", "Business process automation", "Knowledge graph and MCP foundations"]
+        "tag": "01",
+        "title": "Agentic AI",
+        "description": "Autonomous agents that execute workflows, decisions, and process steps across business tools — with human oversight where it matters.",
+        "outcomes": ["Workflow execution agents", "Business process automation", "Knowledge graph and tool foundations"]
       },
       {
-        "tag": "G2",
-        "title": "Generative Intelligence",
-        "description": "LLM-powered systems that transform enterprise knowledge into actionable intelligence, answers, and suggestions.",
-        "outcomes": ["Knowledge assistants", "Decision support systems", "Document and insight intelligence"]
+        "tag": "02",
+        "title": "Generative AI",
+        "description": "LLM-powered systems that turn documents, policies, and domain knowledge into usable intelligence and recommendations.",
+        "outcomes": ["Knowledge assistants", "Decision support", "Document and insight intelligence"]
       },
       {
-        "tag": "D3",
-        "title": "Data Intelligence Platform",
-        "description": "Scalable data foundations powering analytics, automation, and AI systems with trusted business context.",
-        "outcomes": ["Modern data pipelines", "Analytics foundations", "Data quality and governance"]
+        "tag": "03",
+        "title": "Data Engineering",
+        "description": "Reliable pipelines and platforms that move, transform, and serve enterprise data for analytics and AI.",
+        "outcomes": ["Modern data pipelines", "Batch and streaming foundations", "Quality checks in the flow"]
       },
       {
-        "tag": "GA",
-        "title": "GAURI Revenue Intelligence",
-        "description": "Growth Acceleration Using Revenue Intelligence: an Agentic AI powered revenue intelligence framework for sales funnel improvement.",
-        "outcomes": ["Lead intelligence", "Account research workflows", "Revenue signal tracking"]
+        "tag": "04",
+        "title": "Data Modelling",
+        "description": "Clear entities, relationships, and metrics so teams share one definition of the business.",
+        "outcomes": ["Canonical models", "Metric definitions", "Domain entity maps"]
       },
       {
-        "tag": "MA",
-        "title": "Migration Agents",
-        "description": "AI-assisted migration workflows that help teams understand legacy systems, map data, and reduce manual transition effort.",
-        "outcomes": ["Legacy assessment", "Schema and mapping support", "Migration validation"]
+        "tag": "05",
+        "title": "BI",
+        "description": "Reporting and dashboards grounded in trusted metrics — so decisions rest on numbers leadership can stand behind.",
+        "outcomes": ["Executive and ops reporting", "Self-serve analytics layers", "Metric-consistent dashboards"]
       },
       {
-        "tag": "Str",
-        "title": "Data Domain Consulting",
-        "description": "Strategic guidance for data architecture, analytics adoption, intelligence roadmaps, and domain-specific decision systems.",
-        "outcomes": ["Use-case prioritization", "Architecture planning", "Adoption roadmaps"]
+        "tag": "06",
+        "title": "data architecture",
+        "description": "End-to-end shape of the data estate: lakes, warehouses, governance, and the paths AI systems consume.",
+        "outcomes": ["Platform blueprints", "Governance boundaries", "AI-ready data paths"]
       }
     ]
   },
@@ -161,12 +161,12 @@ window.SOAMIQ = {
     "title": "Core Capabilities",
     "description": "Soamiq operates across a focused set of data and AI disciplines.",
     "items": [
-      "Data Engineering",
-      "Data Science",
-      "Machine Learning",
       "Agentic AI",
       "Generative AI",
-      "Artificial Intelligence"
+      "Data Engineering",
+      "Data Modelling",
+      "BI",
+      "data architecture"
     ]
   },
   "process": {
@@ -232,7 +232,7 @@ window.SOAMIQ = {
     "title": "Questions Teams Ask",
     "description": "A few practical answers for teams considering an AI or data engagement.",
     "items": [
-      { "question": "What is Soamiq focused on?", "answer": "Soamiq builds intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence across Data Engineering, Data Science, Machine Learning, Agentic AI, Generative AI, and Artificial Intelligence." },
+      { "question": "What is Soamiq focused on?", "answer": "Soamiq builds intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence across Agentic AI, Generative AI, Data Engineering, Data Modelling, BI, and data architecture." },
       { "question": "What is GAURI?", "answer": "GAURI stands for Growth Acceleration Using Revenue Intelligence. It is an Agentic AI powered revenue intelligence framework for improving sales funnels and sales-cycle movement, used as the Soamiq Clay agency platform." },
       { "question": "Do you only build MCPs for agentic solutions?", "answer": "No. MCPs and tool integrations are one layer. Soamiq also intends to build knowledge graphs so agents can use richer business context and provide more accurate answers." },
       { "question": "Which domains does Soamiq understand?", "answer": "Founding members of Soamiq bring experience across retail, consumer packaged goods, insurance, banking and financial services, gaming, and new age cloud platforms." }
