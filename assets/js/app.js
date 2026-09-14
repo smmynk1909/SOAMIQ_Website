@@ -110,11 +110,11 @@
     var mobLinks = nav.links.map(function (l) { return '<a href="' + l.href + '">' + l.label + "</a>"; }).join("");
     return (
       '<div class="progress" id="progress" aria-hidden="true"></div>' +
-      '<header class="nav" id="nav">' +
-        '<div class="container nav__inner">' +
+      '<header class="gnav nav" id="nav">' +
+        '<div class="gnav__inner nav__inner">' +
           '<a href="/" aria-label="' + (D.site.brand || "Soamiq") + ' home">' + brandMarkup() + "</a>" +
-          '<nav class="nav__links" aria-label="Primary">' + links + "</nav>" +
-          '<div class="nav__actions">' +
+          '<nav class="gnav__links nav__links" aria-label="Primary">' + links + "</nav>" +
+          '<div class="gnav__actions nav__actions">' +
             '<a href="/contact" class="btn btn--primary btn--sm">' + nav.cta + "</a>" +
             '<button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>' +
           "</div>" +
@@ -137,7 +137,7 @@
       return '<a href="' + s.href + '"' + (/^https?:/.test(s.href) ? ' target="_blank" rel="noopener"' : "") + ">" + s.label + "</a>";
     }).join("");
     return (
-      '<footer class="footer"><div class="container">' +
+      '<footer class="footer footer--parchment"><div class="container">' +
         '<div class="footer__top">' +
           '<div class="footer__about"><a href="/">' + brandMarkup() + "</a>" +
             "<p>" + (D.site.footerDescription || "") + "</p>" +
@@ -153,75 +153,145 @@
   }
 
   /* ---------- reusable sections ---------- */
-  function homeTrustStage() {
+  function homeHeroStage() {
     var x = D.hero;
+    var g = D.gauri || {};
+    var flow = (g.stages || []).map(function (s) { return s.title; }).join(" → ");
     return (
-      '<section class="stage-view stage-view--center" aria-label="Trust">' +
-        '<div class="container">' +
-          brandMarkup("logo-slot--hero") +
-          '<h1 class="stage-view__kicker reveal" data-anim="up">' + (x.kicker || x.title) + "</h1>" +
-          '<p class="stage-view__sub reveal" data-anim="up">' + x.description + "</p>" +
+      '<section class="tile tile--immersive tile--lit hero-apple stage--immersive stage--lit" aria-label="Hero">' +
+        '<div class="container hero-apple__inner">' +
+          "<div>" +
+            brandMarkup("logo-slot--hero") +
+            '<p class="eyebrow reveal">' + (x.eyebrow || "Soamiq Labs") + "</p>" +
+            '<h1 class="hero-apple__title reveal" data-anim="up">' + (x.kicker || x.title) + "</h1>" +
+            '<p class="hero-apple__desc reveal" data-anim="up">' + x.description + "</p>" +
+            '<div class="hero-apple__cta reveal" data-anim="up">' +
+              '<a href="' + x.primaryHref + '" class="btn btn--primary">' + x.primaryCta + "</a>" +
+              '<a href="' + (x.secondaryHref || "/gauri") + '" class="btn btn--ghost">' + (x.secondaryCta || "Explore GAURI") + "</a>" +
+            "</div>" +
+          "</div>" +
+          '<div class="hero-apple__media reveal" data-anim="scale" aria-hidden="true">' +
+            '<div class="hero-apple__object-ring"></div>' +
+            '<div class="hero-apple__object">' +
+              '<div class="hero-apple__object-mark">GAURI</div>' +
+              '<div class="hero-apple__object-flow">' + (flow || "Discover → Understand → Prioritize → Activate") + "</div>" +
+            "</div>" +
+          "</div>" +
         "</div>" +
       "</section>"
     );
   }
 
-  function homePillarsStage() {
+  function homeHighlightTiles() {
     var p = D.premiumFlow;
-    var rows = p.items.map(function (it, i) {
+    var cards = p.items.map(function (it, i) {
       return (
-        '<div class="pillar-row reveal" data-anim="up">' +
-          '<div class="pillar-row__idx">0' + (i + 1) + "</div>" +
-          "<div><h3>" + it.title + "</h3><p>" + it.description + "</p>" +
-          '<div class="flow__label" style="margin-top:14px">' + it.label + "</div></div>" +
-        "</div>"
+        '<article class="highlight-card reveal" data-anim="up">' +
+          '<div class="highlight-card__idx">0' + (i + 1) + "</div>" +
+          "<h3>" + it.title + "</h3>" +
+          "<p>" + it.description + "</p>" +
+          '<div class="highlight-card__label">' + it.label + "</div>" +
+        "</article>"
       );
     }).join("");
     return (
-      '<section class="stage-view" aria-label="Pillars">' +
-        '<div class="container">' +
+      '<section class="tile tile--white" aria-label="Pillars">' +
+        '<div class="container" style="padding-bottom:48px">' +
           '<p class="eyebrow reveal" style="text-align:center">' + p.eyebrow + "</p>" +
-          '<h2 class="section__title reveal" style="text-align:center;max-width:18ch;margin:0 auto 56px">' + p.title + "</h2>" +
-          '<div class="pillar-rail" data-stagger>' + rows + "</div>" +
+          '<h2 class="section__title reveal" style="text-align:center;max-width:20ch;margin:0 auto 40px">' + p.title + "</h2>" +
         "</div>" +
+        '<div class="highlight-grid" data-stagger>' + cards + "</div>" +
       "</section>"
     );
   }
 
-  function homeGauriStage() {
+  function homeGauriSticky() {
     var g = D.gauri;
-    var stages = (g.stages || []).map(function (s) { return "<span>" + s.title + "</span>"; }).join('<i aria-hidden="true">→</i>');
-    return (
-      '<section class="stage-view stage-view--center" aria-label="GAURI">' +
-        '<div class="container">' +
-          '<div class="gauri-stage reveal" data-anim="up">' +
-            '<div class="gauri-stage__label">' + g.eyebrow + "</div>" +
-            "<h2>" + g.title + "</h2>" +
-            "<p>" + (g.oneLiner || g.description) + "</p>" +
-            '<div class="gauri-stage__flow" aria-label="GAURI workflow">' + stages + "</div>" +
-            '<a href="/gauri" class="btn btn--ghost">Explore GAURI</a>' +
+    var stages = g.stages || [];
+    var chapters = stages.map(function (s, i) {
+      return (
+        '<div class="sticky-story__chapter" data-chapter="' + slugify(s.title) + '" data-step="' + i + '">' +
+          '<div class="sticky-story__chapter-inner reveal" data-anim="up">' +
+            '<p class="eyebrow">0' + (i + 1) + " — " + s.title + "</p>" +
+            "<h3>" + s.title + "</h3>" +
+            "<p>" + s.description + "</p>" +
           "</div>" +
+        "</div>"
+      );
+    }).join("");
+    var dots = stages.map(function (_, i) {
+      return '<span' + (i === 0 ? ' class="is-active"' : "") + ' data-dot="' + i + '"></span>';
+    }).join("");
+    var first = stages[0] || { title: "Discover", description: "" };
+    return (
+      '<section class="tile tile--canvas" style="padding:0" aria-label="How GAURI works" id="how-gauri">' +
+        '<div class="container" style="padding-top:var(--section-y);padding-bottom:40px;text-align:center">' +
+          '<p class="eyebrow reveal">' + (g.eyebrow || "GAURI") + "</p>" +
+          '<h2 class="section__title reveal">' + (g.howItWorksTitle || "Discover → Understand → Prioritize → Activate") + "</h2>" +
+          '<p class="lede lede--center reveal">' + (g.howItWorksDescription || "") + "</p>" +
+        "</div>" +
+        '<div class="sticky-story" id="gauriSticky">' +
+          '<div class="sticky-story__media" aria-hidden="true">' +
+            '<div class="sticky-story__panel" id="gauriStickyPanel">' +
+              '<div class="sticky-story__step-label">Step</div>' +
+              '<div class="sticky-story__step-title" id="gauriStickyTitle">' + first.title + "</div>" +
+              '<div class="sticky-story__step-body" id="gauriStickyBody">' + first.description + "</div>" +
+              '<div class="sticky-story__dots" id="gauriStickyDots">' + dots + "</div>" +
+            "</div>" +
+          "</div>" +
+          '<div class="sticky-story__copy">' + chapters + "</div>" +
+        "</div>" +
+        '<div class="container" style="padding:48px var(--gutter) var(--section-y);text-align:center">' +
+          '<a href="/gauri" class="btn btn--primary">Explore GAURI</a>' +
         "</div>" +
       "</section>"
     );
   }
 
-  function homePrimaryCta() {
+  function homeProofStage() {
+    var a = D.about || {};
+    var strengths = (a.strengths || []).map(function (s) {
+      return (
+        '<article class="highlight-card reveal" data-anim="up">' +
+          "<h3>" + s.title + "</h3>" +
+          "<p>" + s.description + "</p>" +
+        "</article>"
+      );
+    }).join("");
+    return (
+      '<section class="tile tile--parchment" aria-label="Proof">' +
+        '<div class="container" style="padding-bottom:40px;text-align:center">' +
+          '<p class="eyebrow reveal">Why Soamiq</p>' +
+          '<h2 class="section__title reveal">Built for teams that must defend every decision.</h2>' +
+        "</div>" +
+        '<div class="highlight-grid" data-stagger>' + strengths + "</div>" +
+      "</section>"
+    );
+  }
+
+  function homeActionBand() {
     var x = D.hero;
     return (
-      '<section class="stage-view stage-view--center" aria-label="Contact">' +
-        '<div class="container">' +
-          '<h2 class="stage-view__kicker reveal" data-anim="up" style="font-size:clamp(2rem,5vw,3.4rem)">Build smarter.<br>Build optimized.</h2>' +
-          '<p class="stage-view__sub reveal" data-anim="up">' + (D.site.positioning || "") + "</p>" +
-          '<div class="stage-view__cta reveal" data-anim="up">' +
+      '<section class="tile tile--white" style="padding:0" aria-label="Contact">' +
+        '<div class="cta-band">' +
+          '<h2 class="reveal" data-anim="up">Build smarter.<br>Build optimized.</h2>' +
+          '<p class="reveal" data-anim="up">' + (D.site.positioning || "") + "</p>" +
+          '<div class="hero-apple__cta reveal" data-anim="up">' +
             '<a href="' + x.primaryHref + '" class="btn btn--primary">' + x.primaryCta + "</a>" +
+            '<a href="/capabilities" class="btn btn--ghost">See capabilities</a>' +
           "</div>" +
         "</div>" +
       "</section>"
     );
   }
 
-  function heroSection() {
+  /* legacy aliases kept for inner pages */
+  function homeTrustStage() { return homeHeroStage(); }
+  function homePillarsStage() { return homeHighlightTiles(); }
+  function homeGauriStage() { return homeGauriSticky(); }
+  function homePrimaryCta() { return homeActionBand(); }
+
+    function heroSection() {
     // Kept for inner pages that still call a dense hero; homepage uses stage-views.
     var x = D.hero;
     return (
@@ -261,38 +331,50 @@
       var outs = (it.outcomes || []).map(function (o) { return "<li>" + o + "</li>"; }).join("");
       var id = slugify(it.title);
       chapters.push(
-        '<article class="chapter reveal" data-anim="up" id="' + id + '">' +
-          '<div class="chapter__meta">' +
-            '<div class="chapter__tag">' + it.tag + "</div>" +
-            "<h3>" + it.title + "</h3>" +
-            "<p>" + it.description + "</p>" +
+        '<article class="cap-chapter reveal" data-anim="up" id="' + id + '" data-chapter="' + id + '">' +
+          '<div class="cap-chapter__inner">' +
+            "<div>" +
+              '<div class="cap-chapter__tag">' + it.tag + "</div>" +
+              "<h2>" + it.title + "</h2>" +
+              '<p class="cap-chapter__desc">' + it.description + "</p>" +
+            "</div>" +
+            '<ul class="cap-chapter__list">' + outs + "</ul>" +
           "</div>" +
-          '<ul class="chapter__list">' + outs + "</ul>" +
         "</article>"
       );
     });
-    // GAURI as product link, not a service card
     var g = D.gauri || {};
     chapters.push(
-      '<article class="chapter chapter--product reveal" data-anim="up" id="gauri">' +
-        '<div class="chapter__meta">' +
-          '<div class="chapter__tag">Product</div>' +
-          "<h3>" + (g.eyebrow || "GAURI") + "</h3>" +
-          "<p>" + (g.oneLiner || g.description || "") + "</p>" +
-          '<a href="/gauri" class="btn btn--primary">Explore GAURI</a>' +
+      '<article class="cap-chapter reveal" data-anim="up" id="gauri" data-chapter="gauri" style="background:var(--bg-elevated);text-align:center">' +
+        '<div class="cap-chapter__inner" style="grid-template-columns:1fr;justify-items:center">' +
+          "<div>" +
+            '<div class="cap-chapter__tag">Product</div>' +
+            "<h2>" + (g.eyebrow || "GAURI") + "</h2>" +
+            '<p class="cap-chapter__desc" style="margin-inline:auto">' + (g.oneLiner || g.description || "") + "</p>" +
+            '<div style="margin-top:28px"><a href="/gauri" class="btn btn--primary">Explore GAURI</a></div>' +
+          "</div>" +
         "</div>" +
       "</article>"
     );
     var head = opts.hideHead ? "" : (
-      '<div class="section__head reveal"><p class="eyebrow">What we deliver</p>' +
+      '<div class="tile tile--canvas" style="padding-bottom:0"><div class="container">' +
+        '<div class="section__head reveal"><p class="eyebrow">What we deliver</p>' +
         '<h2 class="section__title">' + s.title + '</h2>' +
-        '<p class="lead lead--center">' + s.description + "</p></div>"
+        '<p class="lead lead--center">' + s.description + "</p></div></div></div>"
     );
+    var rail = '';
+    if (opts.spyRail) {
+      var links = (s.items || []).filter(function (it) { return !isGauriService(it); }).map(function (it) {
+        return '<a href="#' + slugify(it.title) + '">' + it.title + "</a>";
+      }).join("");
+      rail = '<nav class="spy-rail" id="capSpyRail" aria-label="Chapters">' + links + '<a href="#gauri">GAURI</a></nav>';
+    }
     return (
-      '<section class="section" id="services"><div class="container">' +
+      '<section id="services">' +
         head +
-        '<div class="chapters">' + chapters.join("") + "</div>" +
-      "</div></section>"
+        chapters.join("") +
+        rail +
+      "</section>"
     );
   }
 
@@ -386,12 +468,12 @@
 
   function ctaBand(title, text) {
     return (
-      '<section class="section"><div class="container"><div class="cta-band reveal" data-anim="scale">' +
+      '<section class="tile tile--white" style="padding:0"><div class="cta-band reveal" data-anim="scale">' +
           "<h2>" + title + "</h2><p>" + text + "</p>" +
           '<div class="hero__cta">' +
             '<a href="/contact" class="btn btn--primary">' + D.hero.primaryCta + "</a>" +
           "</div>" +
-      "</div></div></section>"
+      "</div></section>"
     );
   }
 
@@ -417,8 +499,8 @@
   /* ---------- page renderers ---------- */
   var pages = {
     home: function () {
-      // Sparse: one idea per viewport — Trust → Pillars → GAURI → one CTA
-      return homeTrustStage() + homePillarsStage() + homeGauriStage() + homePrimaryCta();
+      // Immersive hero → light highlights → sticky GAURI → light proof → white Action
+      return homeHeroStage() + homeHighlightTiles() + homeGauriSticky() + homeProofStage() + homeActionBand();
     },
     services: function () {
       return pageHero(D.services.title, D.services.description) +
@@ -426,7 +508,9 @@
         ctaBand("Have a use case in mind?", "Tell us about the decision or workflow you want to make intelligent.");
     },
     capabilities: function () {
-      return pages.services();
+      return pageHero(D.services.title, D.services.description) +
+        servicesSection({ hideHead: true, spyRail: true }) +
+        ctaBand("Have a use case in mind?", "Tell us about the decision or workflow you want to make intelligent.");
     },
     frameworks: function () {
       var fw = D.frameworks;
@@ -500,8 +584,24 @@
     },
     gauri: function () {
       var g = D.gauri;
-      var stages = g.stages.map(function (s) {
-        return '<article class="stage reveal" data-anim="up"><h3>' + s.title + "</h3><p>" + s.description + "</p></article>";
+      var stages = g.stages || [];
+      var chapters = stages.map(function (s, i) {
+        return (
+          '<div class="sticky-story__chapter" data-chapter="' + slugify(s.title) + '" data-step="' + i + '" id="stage-' + slugify(s.title) + '">' +
+            '<div class="sticky-story__chapter-inner reveal" data-anim="up">' +
+              '<p class="eyebrow">0' + (i + 1) + " — " + s.title + "</p>" +
+              "<h3>" + s.title + "</h3>" +
+              "<p>" + s.description + "</p>" +
+            "</div>" +
+          "</div>"
+        );
+      }).join("");
+      var dots = stages.map(function (_, i) {
+        return '<span' + (i === 0 ? ' class="is-active"' : "") + ' data-dot="' + i + '"></span>';
+      }).join("");
+      var first = stages[0] || { title: "Discover", description: "" };
+      var spy = stages.map(function (s) {
+        return '<a href="#stage-' + slugify(s.title) + '">' + s.title + "</a>";
       }).join("");
       var contrastHead = '<div class="contrast__row contrast__head"><div class="k">Lens</div><div class="c">Copilot</div><div class="g">Governed agent (GAURI)</div></div>';
       var contrastRows = (g.governedContrast || []).map(function (r) {
@@ -512,36 +612,51 @@
       }).join("");
       var outs = (g.outcomes || []).map(function (o) { return '<span class="pill reveal" data-anim="scale">' + o + "</span>"; }).join("");
       return (
-        '<section class="page-hero">' +
+        '<section class="tile tile--immersive tile--lit page-hero stage--immersive" style="text-align:center">' +
           '<div class="container">' +
             brandMarkup("logo-slot--hero") +
             '<span class="chip reveal"><span class="dot"></span>' + g.eyebrow + "</span>" +
-            '<h1 class="reveal" data-anim="up" style="margin-top:20px">' + g.title + "</h1>" +
-            '<p class="reveal" data-anim="up">' + g.description + "</p>" +
-            '<div class="hero__cta reveal" style="justify-content:center;margin-top:30px">' +
+            '<h1 class="reveal" data-anim="up" style="margin-top:20px;font-size:clamp(2.25rem,4.5vw,3.25rem);letter-spacing:-0.02em">' + g.title + "</h1>" +
+            '<p class="reveal" data-anim="up" style="color:var(--muted-on-dark)">' + g.description + "</p>" +
+            '<div class="hero-apple__cta reveal" style="justify-content:center;margin-top:30px">' +
               '<a href="/contact" class="btn btn--primary">' + g.primaryCta + "</a>" +
+              '<a href="/capabilities" class="btn btn--ghost">' + (g.secondaryCta || "See capabilities") + "</a>" +
             "</div>" +
           "</div>" +
         "</section>" +
-        '<section class="section section--tight"><div class="container">' +
-          '<div class="section__head reveal"><p class="eyebrow">Workflow</p><h2 class="section__title">' + g.howItWorksTitle + '</h2>' +
-          '<p class="lead lead--center">' + g.howItWorksDescription + "</p></div>" +
-          '<div class="stages" data-stagger>' + stages + "</div>" +
-        "</div></section>" +
+        '<section class="tile tile--canvas" style="padding:0" aria-label="How it works" id="how-it-works">' +
+          '<div class="container" style="padding-top:var(--section-y);padding-bottom:40px;text-align:center">' +
+            '<p class="eyebrow reveal">Workflow</p>' +
+            '<h2 class="section__title reveal">' + g.howItWorksTitle + '</h2>' +
+            '<p class="lede lede--center reveal">' + g.howItWorksDescription + "</p>" +
+          "</div>" +
+          '<div class="sticky-story" id="gauriSticky">' +
+            '<div class="sticky-story__media" aria-hidden="true">' +
+              '<div class="sticky-story__panel" id="gauriStickyPanel">' +
+                '<div class="sticky-story__step-label">Step</div>' +
+                '<div class="sticky-story__step-title" id="gauriStickyTitle">' + first.title + "</div>" +
+                '<div class="sticky-story__step-body" id="gauriStickyBody">' + first.description + "</div>" +
+                '<div class="sticky-story__dots" id="gauriStickyDots">' + dots + "</div>" +
+              "</div>" +
+            "</div>" +
+            '<div class="sticky-story__copy">' + chapters + "</div>" +
+          "</div>" +
+          '<nav class="spy-rail" id="gauriSpyRail" aria-label="GAURI stages">' + spy + "</nav>" +
+        "</section>" +
         (g.governedContrast && g.governedContrast.length ? (
-          '<section class="section section--alt"><div class="container">' +
+          '<section class="tile tile--white"><div class="container">' +
             '<div class="section__head reveal"><p class="eyebrow">Governance</p><h2 class="section__title">' + (g.governedTitle || "Governed agents vs copilots") + '</h2>' +
             '<p class="lead lead--center">' + (g.governedDescription || "") + "</p></div>" +
             '<div class="contrast reveal">' + contrastHead + contrastRows + "</div>" +
           "</div></section>"
         ) : "") +
         (g.principles && g.principles.length ? (
-          '<section class="section"><div class="container">' +
+          '<section class="tile tile--parchment"><div class="container">' +
             '<div class="section__head reveal"><p class="eyebrow">Trust posture</p><h2 class="section__title">' + (g.principlesTitle || "") + '</h2></div>' +
             '<div class="principles" data-stagger>' + principles + "</div>" +
           "</div></section>"
         ) : "") +
-        '<section class="section section--alt"><div class="container">' +
+        '<section class="tile tile--canvas"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Outcomes</p><h2 class="section__title">' + g.outcomesTitle + '</h2>' +
           '<p class="lead lead--center">' + g.outcomesDescription + "</p></div>" +
           '<div class="pills" data-stagger>' + outs + "</div>" +
@@ -653,6 +768,79 @@
         q.setAttribute("aria-expanded", String(open));
         a.style.maxHeight = open ? a.scrollHeight + "px" : null;
       });
+    });
+
+    // Immersive hero → progressive nav chrome
+    if (document.querySelector(".hero-apple, .tile--immersive.page-hero, .page-hero.tile--immersive")) {
+      document.body.classList.add("has-immersive-hero");
+    }
+
+    // Sticky storytelling panel sync
+    var stickyRoot = document.getElementById("gauriSticky");
+    if (stickyRoot && "IntersectionObserver" in window) {
+      var titleEl = document.getElementById("gauriStickyTitle");
+      var bodyEl = document.getElementById("gauriStickyBody");
+      var dotsEl = document.getElementById("gauriStickyDots");
+      var chapters = stickyRoot.querySelectorAll(".sticky-story__chapter");
+      var stageData = ((D.gauri && D.gauri.stages) || []);
+      var setStep = function (idx) {
+        var s = stageData[idx];
+        if (!s) return;
+        if (titleEl) titleEl.textContent = s.title;
+        if (bodyEl) bodyEl.textContent = s.description;
+        if (dotsEl) {
+          dotsEl.querySelectorAll("span").forEach(function (d, i) {
+            d.classList.toggle("is-active", i === idx);
+          });
+        }
+        var rail = document.getElementById("gauriSpyRail");
+        if (rail) {
+          rail.querySelectorAll("a").forEach(function (a, i) {
+            a.classList.toggle("is-active", i === idx);
+          });
+        }
+      };
+      if (reduceMotion) {
+        // Stack statically — panel shows first step only
+        setStep(0);
+      } else {
+        var sio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            var idx = parseInt(en.target.getAttribute("data-step"), 10);
+            if (!isNaN(idx)) setStep(idx);
+          });
+        }, { threshold: 0.45, rootMargin: "-20% 0px -20% 0px" });
+        chapters.forEach(function (ch) { sio.observe(ch); });
+      }
+    }
+
+    // Capabilities / GAURI spy rail visibility + active
+    ["capSpyRail", "gauriSpyRail"].forEach(function (id) {
+      var rail = document.getElementById(id);
+      if (!rail) return;
+      var show = function () {
+        var y = window.scrollY || window.pageYOffset;
+        rail.classList.toggle("is-visible", y > (window.innerHeight * 0.4));
+      };
+      window.addEventListener("scroll", show, { passive: true });
+      show();
+      if ("IntersectionObserver" in window) {
+        var targets = [];
+        rail.querySelectorAll("a[href^='#']").forEach(function (a) {
+          var t = document.querySelector(a.getAttribute("href"));
+          if (t) targets.push({ el: t, link: a });
+        });
+        var rio = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            targets.forEach(function (t) {
+              t.link.classList.toggle("is-active", t.el === en.target);
+            });
+          });
+        }, { threshold: 0.35, rootMargin: "-30% 0px -40% 0px" });
+        targets.forEach(function (t) { rio.observe(t.el); });
+      }
     });
 
     // contact form

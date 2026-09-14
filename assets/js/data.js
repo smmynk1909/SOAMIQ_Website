@@ -151,7 +151,7 @@ window.SOAMIQ = {
       },
       {
         "tag": "06",
-        "title": "data architecture",
+        "title": "Data Architecture",
         "description": "End-to-end shape of the data estate: lakes, warehouses, governance, and the paths AI systems consume.",
         "outcomes": ["Platform blueprints", "Governance boundaries", "AI-ready data paths"]
       }
@@ -166,7 +166,7 @@ window.SOAMIQ = {
       "Data Engineering",
       "Data Modelling",
       "BI",
-      "data architecture"
+      "Data Architecture"
     ]
   },
   "process": {
@@ -232,7 +232,7 @@ window.SOAMIQ = {
     "title": "Questions Teams Ask",
     "description": "A few practical answers for teams considering an AI or data engagement.",
     "items": [
-      { "question": "What is Soamiq focused on?", "answer": "Soamiq builds intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence across Agentic AI, Generative AI, Data Engineering, Data Modelling, BI, and data architecture." },
+      { "question": "What is Soamiq focused on?", "answer": "Soamiq builds intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence across Agentic AI, Generative AI, Data Engineering, Data Modelling, BI, and Data Architecture." },
       { "question": "What is GAURI?", "answer": "GAURI stands for Growth Acceleration Using Revenue Intelligence. It is an Agentic AI powered revenue intelligence framework for improving sales funnels and sales-cycle movement, used as the Soamiq Clay agency platform." },
       { "question": "Do you only build MCPs for agentic solutions?", "answer": "No. MCPs and tool integrations are one layer. Soamiq also intends to build knowledge graphs so agents can use richer business context and provide more accurate answers." },
       { "question": "Which domains does Soamiq understand?", "answer": "Founding members of Soamiq bring experience across retail, consumer packaged goods, insurance, banking and financial services, gaming, and new age cloud platforms." }
