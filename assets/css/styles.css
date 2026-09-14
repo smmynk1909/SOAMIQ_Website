@@ -1090,7 +1090,7 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
   padding: 72px 0 32px;
   color: var(--ink);
 }
-.footer__top { display: grid; grid-template-columns: 1.4fr repeat(4, 1fr); gap: 36px; }
+.footer__top { display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 36px; }
 .footer__about { max-width: 32ch; }
 .footer__about p { color: var(--faint); font-size: .9rem; margin-top: 16px; }
 .footer__social { display: flex; gap: 10px; margin-top: 18px; }

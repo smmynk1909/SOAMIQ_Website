@@ -46,14 +46,9 @@ window.SOAMIQ = {
         ]
       },
       {
-        "title": "Capabilities",
-        "links": [
-          { "label": "Capabilities", "href": "/capabilities" }
-        ]
-      },
-      {
         "title": "Company",
         "links": [
+          { "label": "Capabilities", "href": "/capabilities" },
           { "label": "About", "href": "/about" },
           { "label": "Leadership", "href": "/about#team" },
           { "label": "Contact", "href": "/contact" }
@@ -247,10 +242,10 @@ window.SOAMIQ = {
     "oneLiner": "We don’t sell AI that talks about your pipeline. We sell revenue agents that can act — and that you can defend.",
     "howItWorksTitle": "Discover → Understand → Prioritize → Activate",
     "howItWorksDescription": "A clear revenue workflow before enterprise RI spend — clean data and governed agents beat a flashy layer on inconsistent deals.",
-    "path": {
+    "pathChapter": {
       "eyebrow": "Path",
       "title": "Notion CRM → trusted revenue data → GAURI",
-      "body": "Don’t buy heavyweight revenue intelligence on dirty pipeline data. Start from the system of record you already run, make definitions and ownership trustworthy, then put governed agents on top.",
+      "description": "Don’t buy heavyweight revenue intelligence on dirty pipeline data. Start from the system of record you already run, make definitions and ownership trustworthy, then put governed agents on top.",
       "line": "Clean data and governed agents beat a flashy layer on inconsistent deals."
     },
     /* Split-step data: title/description (and optional kicker/cta) render on the copy side only.
@@ -345,7 +340,7 @@ window.SOAMIQ = {
     },
     "form": {
       "fields": { "name": "Full Name", "email": "Email", "company": "Company", "message": "Message" },
-      "placeholders": { "name": "Your name", "email": "your@email.com", "company": "Your company", "message": "Tell us about your project..." },
+      "placeholders": { "name": "Your name", "email": "your@email.com", "company": "Your company", "message": "Tell us about the workflow or decision…" },
       "submit": "Send Message",
       "successTitle": "Thank You!",
       "successMessage": "We have received your message and will get back to you soon."

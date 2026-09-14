@@ -681,13 +681,13 @@
         return '<article class="principle reveal" data-anim="up"><h3>' + p.title + "</h3><p>" + p.description + "</p></article>";
       }).join("");
       var outs = (g.outcomes || []).map(function (o) { return '<span class="pill reveal" data-anim="scale">' + o + "</span>"; }).join("");
-      var path = g.path || {};
+      var path = g.pathChapter || {};
       var pathChapter = path.title ? (
         '<section class="tile tile--white gauri-path" aria-label="Path" id="path">' +
           '<div class="container gauri-path__inner">' +
             '<p class="eyebrow reveal">' + (path.eyebrow || "Path") + "</p>" +
             '<h2 class="section__title reveal">' + path.title + "</h2>" +
-            '<p class="lede lede--center reveal">' + (path.body || "") + "</p>" +
+            '<p class="lede lede--center reveal">' + (path.description || "") + "</p>" +
             (path.line ? '<p class="gauri-path__line reveal">' + path.line + "</p>" : "") +
           "</div>" +
         "</section>"
