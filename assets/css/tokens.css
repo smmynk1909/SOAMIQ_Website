@@ -1,0 +1,81 @@
+/* ============================================================
+   SOAMIQ design tokens — Apple-system shape, Soamiq palette
+   Techniques from PDMEnt tokens.css; colors remapped (no cream/lime).
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --bg-canvas: #f5f5f7;       /* default light canvas */
+  --bg-elevated: #ffffff;     /* elevated / white tiles */
+  --bg-immersive: #1c1d21;    /* dark cinema stages */
+  --bg-parchment: #ececef;    /* soft gray footer / light alt */
+  --bg-dark: var(--bg-immersive);
+  --bg-ink: #121316;
+  --bg-light: var(--bg-canvas);
+  --bg-white: var(--bg-elevated);
+
+  /* Ink pairs — light surfaces */
+  --ink: #1d1d1f;
+  --ink-soft: #6e6e73;
+  --muted: #6e6e73;
+  --faint: #86868b;
+
+  /* Ink pairs — immersive (on-dark) */
+  --ink-on-dark: #f5f5f7;
+  --muted-on-dark: #a1a1a6;
+  --faint-on-dark: #86868b;
+
+  /* Accent — one restrained teal */
+  --accent: #0a7c72;
+  --accent-dark: #065f58;     /* links on light */
+  --accent-bright: #2bb5a8;   /* on-dark accent */
+  --accent-soft: rgba(10, 124, 114, 0.12);
+
+  /* Lines (hairlines over shadows) */
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.14);
+  --line-on-dark: rgba(255, 255, 255, 0.1);
+  --line-on-dark-strong: rgba(255, 255, 255, 0.18);
+
+  /* Soft shadow — product media only */
+  --shadow-media: 0 20px 40px rgba(0, 0, 0, 0.08);
+
+  /* Type */
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --body-size: 17px;
+  --body-lh: 1.47;
+  --body-weight: 400;
+
+  /* Chrome / space */
+  --nav-global: 44px;
+  --nav-local: 52px;
+  --nav-h: var(--nav-global);
+  --section-y: clamp(96px, 12vw, 120px);
+  --gutter: clamp(16px, 4vw, 28px);
+  --max: 980px;
+  --max-wide: 1120px;
+  --max-catalog: 1400px;
+
+  /* Radius */
+  --radius-s: 12px;
+  --radius-m: 18px;
+  --radius-l: 28px;
+  --radius-pill: 9999px;
+
+  /* Motion — Apple ease-out */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --fast: 180ms;
+  --med: 320ms;
+  --slow: 600ms;
+
+  --sticky-stack: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --fast: 0ms;
+    --med: 0ms;
+    --slow: 0ms;
+  }
+}
