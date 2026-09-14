@@ -253,6 +253,8 @@ window.SOAMIQ = {
       "body": "Don’t buy heavyweight revenue intelligence on dirty pipeline data. Start from the system of record you already run, make definitions and ownership trustworthy, then put governed agents on top.",
       "line": "Clean data and governed agents beat a flashy layer on inconsistent deals."
     },
+    /* Split-step data: title/description (and optional kicker/cta) render on the copy side only.
+       visual is a diagram key for the chrome side — never duplicate the paragraph there. */
     "stages": [
       { "title": "Discover", "visual": "discover", "description": "Identify high-fit accounts, buying signals, business triggers, and market segments worth pursuing." },
       { "title": "Understand", "visual": "understand", "description": "Turn CRM and domain context into attributable revenue intelligence — clear inputs, clear ownership." },

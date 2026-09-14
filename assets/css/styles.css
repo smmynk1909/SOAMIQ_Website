@@ -514,20 +514,20 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
 .cta-band .hero-apple__cta { justify-content: center; }
 
 /* ============================================================
-   GAURI steps — visual | copy, alternate L/R (no duplicated title/body)
+   Split steps — visual/logic | copy (locked pattern, no mirrored paragraph)
+   Visual: numbered chrome, diagram or structured logic, progress ticks.
+   Copy: title + body + optional one CTA. Alternate L/R per step.
    ============================================================ */
-.gauri-steps {
-  position: relative;
-}
-.gauri-step {
+.split-steps { position: relative; }
+.split-step {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: calc(100svh - var(--nav-h));
   background: var(--bg-canvas);
 }
-.gauri-step[data-side="media-end"] .gauri-step__media { order: 2; }
-.gauri-step[data-side="media-end"] .gauri-step__copy { order: 1; }
-.gauri-step__media {
+.split-step[data-side="media-end"] .split-step__media { order: 2; }
+.split-step[data-side="media-end"] .split-step__copy { order: 1; }
+.split-step__media {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -537,14 +537,14 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
   position: relative;
   overflow: hidden;
 }
-.gauri-step__media::before {
+.split-step__media::before {
   content: "";
   position: absolute; inset: 0; pointer-events: none;
   background:
     radial-gradient(ellipse 70% 50% at 40% 30%, rgba(43,181,168,0.16), transparent 55%),
     radial-gradient(ellipse 50% 40% at 90% 90%, rgba(255,255,255,0.04), transparent 50%);
 }
-.gauri-step__panel {
+.split-step__panel {
   position: relative; z-index: 1;
   width: 100%; max-width: 360px;
   aspect-ratio: 4 / 5;
@@ -556,44 +556,71 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
   padding: 36px 28px;
   text-align: center;
 }
-.gauri-step__mark {
-  font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--accent-bright); font-weight: 600;
+.split-step__panel--logic {
+  aspect-ratio: auto;
+  min-height: 280px;
+  justify-content: flex-start;
+  text-align: left;
+  max-width: 400px;
+}
+.split-step__chrome {
+  width: 100%;
   margin-bottom: 8px;
 }
-.gauri-step__diagram {
+.split-step__mark {
+  font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent-bright); font-weight: 600;
+}
+.split-step__diagram {
   width: 100%; max-width: 220px;
 }
-.gauri-step__diagram svg { width: 100%; height: auto; overflow: visible; }
-.gauri-step__ticks {
+.split-step__diagram svg { width: 100%; height: auto; overflow: visible; }
+.split-step__logic {
+  list-style: none;
+  width: 100%;
+  margin-top: 12px;
+  border-top: 1px solid var(--line-on-dark);
+}
+.split-step__logic li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-on-dark);
+  color: var(--ink-on-dark);
+  font-size: .95rem;
+  line-height: 1.4;
+}
+.split-step__ticks {
   display: flex; gap: 8px; margin-top: 20px;
 }
-.gauri-step__ticks span {
+.split-step__panel--logic .split-step__ticks { margin-top: auto; padding-top: 20px; }
+.split-step__ticks span {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--line-on-dark-strong);
 }
-.gauri-step__ticks span.is-active {
+.split-step__ticks span.is-active {
   background: var(--accent-bright);
   transform: scale(1.25);
 }
-.gauri-step__copy {
+.split-step__copy {
   display: flex; align-items: center; justify-content: flex-start;
   padding: 80px var(--gutter);
   background: var(--bg-canvas);
   color: var(--ink);
 }
-.gauri-step[data-side="media-end"] .gauri-step__copy { justify-content: flex-end; }
-.gauri-step:nth-child(even) .gauri-step__copy { background: var(--bg-parchment); }
-.gauri-step__copy-inner { max-width: 420px; }
-.gauri-step__copy .eyebrow { color: var(--accent); }
-.gauri-step__copy h3 {
+.split-step[data-side="media-end"] .split-step__copy { justify-content: flex-end; }
+.split-step:nth-child(even) .split-step__copy { background: var(--bg-parchment); }
+.split-step__copy-inner { max-width: 420px; }
+.split-step__copy .eyebrow { color: var(--accent); }
+.split-step__copy h2,
+.split-step__copy h3 {
   font-size: clamp(1.6rem, 3vw, 2.1rem);
   margin-bottom: 14px;
   letter-spacing: -0.02em;
 }
-.gauri-step__copy p { color: var(--muted); font-size: 1.05rem; }
+.split-step__copy p { color: var(--muted); font-size: 1.05rem; }
+.split-step__cta { margin-top: 28px; }
 
-/* Legacy sticky-story hooks (spy rail still uses chapter class) */
+/* Legacy class aliases */
+.gauri-steps { position: relative; }
 .sticky-story { position: relative; }
 
 /* Chapter spy rail (optional) */
@@ -1111,14 +1138,14 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
   .highlight-grid { grid-template-columns: 1fr; }
   .highlight-card { border-right: 0; border-bottom: 1px solid var(--line); }
   .highlight-card:last-child { border-bottom: 0; }
-  .gauri-step { grid-template-columns: 1fr; min-height: 0; }
-  .gauri-step[data-side="media-end"] .gauri-step__media,
-  .gauri-step[data-side="media-end"] .gauri-step__copy,
-  .gauri-step__media,
-  .gauri-step__copy { order: 0; }
-  .gauri-step__media { min-height: 42vh; padding: 48px var(--gutter); }
-  .gauri-step__copy { padding: 56px var(--gutter); justify-content: flex-start !important; }
-  .gauri-step__panel { aspect-ratio: auto; max-width: 280px; padding: 28px 22px; }
+  .split-step { grid-template-columns: 1fr; min-height: 0; }
+  .split-step[data-side="media-end"] .split-step__media,
+  .split-step[data-side="media-end"] .split-step__copy,
+  .split-step__media,
+  .split-step__copy { order: 0; }
+  .split-step__media { min-height: 42vh; padding: 48px var(--gutter); }
+  .split-step__copy { padding: 56px var(--gutter); justify-content: flex-start !important; }
+  .split-step__panel { aspect-ratio: auto; max-width: 280px; padding: 28px 22px; }
   .cap-chapter__inner { grid-template-columns: 1fr; gap: 28px; }
   .hero__inner { grid-template-columns: 1fr; gap: 40px; }
   .cards, .stages { grid-template-columns: repeat(2, 1fr); }
@@ -1157,7 +1184,7 @@ body.has-immersive-hero .nav:not(.is-scrolled) .btn--primary {
   * { scroll-behavior: auto !important; }
   .reveal { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
   .strip__track, .hero__caret { animation: none !important; }
-  .gauri-step__media { position: relative; top: 0; height: auto; min-height: 40vh; }
+  .split-step__media { position: relative; top: 0; height: auto; min-height: 40vh; }
 }
 
 .ns { padding: 40px 28px; color: var(--muted); }

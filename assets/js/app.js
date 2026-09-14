@@ -251,47 +251,71 @@
     );
   }
 
-  /* GAURI steps: one side visual (mark + diagram), other side copy only. Alternate L/R. */
+  /* Locked split-step pattern:
+     visual side = chrome + diagram/logic only (never title/body);
+     copy side = title + body + optional one CTA. Alternate L/R. */
+  function renderSplitStep(s) {
+    var side = s.i % 2 === 0 ? "media-start" : "media-end";
+    var ticks = "";
+    var t;
+    for (t = 0; t < s.total; t++) {
+      ticks += "<span" + (t === s.i ? ' class="is-active"' : "") + "></span>";
+    }
+    var Heading = s.heading || "h3";
+    var kicker = s.kicker ? '<p class="eyebrow">' + s.kicker + "</p>" : "";
+    var cta = (s.ctaLabel && s.ctaHref)
+      ? '<div class="split-step__cta"><a href="' + s.ctaHref + '" class="btn btn--primary">' + s.ctaLabel + "</a></div>"
+      : "";
+    var visual =
+      '<div class="split-step__media" aria-hidden="true">' +
+        '<div class="split-step__panel' + (s.panelClass ? " " + s.panelClass : "") + '">' +
+          '<div class="split-step__chrome">' +
+            '<span class="split-step__mark">' + pad2(s.i + 1) + "</span>" +
+          "</div>" +
+          s.visualHtml +
+          '<div class="split-step__ticks">' + ticks + "</div>" +
+        "</div>" +
+      "</div>";
+    var copy =
+      '<div class="split-step__copy">' +
+        '<div class="split-step__copy-inner reveal" data-anim="up">' +
+          kicker +
+          "<" + Heading + ">" + s.title + "</" + Heading + ">" +
+          "<p>" + s.body + "</p>" +
+          cta +
+        "</div>" +
+      "</div>";
+    return (
+      '<article class="split-step sticky-story__chapter" data-side="' + side +
+        '" data-chapter="' + (s.chapter || "") + '" data-step="' + s.i + '"' +
+        (s.id ? ' id="' + s.id + '"' : "") + ">" +
+        visual + copy +
+      "</article>"
+    );
+  }
+
   function gauriStepsStory(opts) {
     opts = opts || {};
     var g = D.gauri || {};
     var stages = g.stages || [];
     var total = stages.length;
+    var last = opts.ctaOnLast || null;
     var steps = stages.map(function (s, i) {
-      var side = i % 2 === 0 ? "media-start" : "media-end";
-      var ticks = "";
-      var t;
-      for (t = 0; t < total; t++) {
-        ticks += "<span" + (t === i ? ' class="is-active"' : "") + "></span>";
-      }
-      var kicker = s.kicker
-        ? '<p class="eyebrow">' + s.kicker + "</p>"
-        : "";
-      var visual =
-        '<div class="gauri-step__media" aria-hidden="true">' +
-          '<div class="gauri-step__panel">' +
-            '<div class="gauri-step__mark">' + pad2(i + 1) + "</div>" +
-            '<div class="gauri-step__diagram">' + stageIllu(s.visual || s.title) + "</div>" +
-            '<div class="gauri-step__ticks">' + ticks + "</div>" +
-          "</div>" +
-        "</div>";
-      var copy =
-        '<div class="gauri-step__copy">' +
-          '<div class="gauri-step__copy-inner reveal" data-anim="up">' +
-            kicker +
-            "<h3>" + s.title + "</h3>" +
-            "<p>" + s.description + "</p>" +
-          "</div>" +
-        "</div>";
-      return (
-        '<article class="gauri-step sticky-story__chapter" data-side="' + side +
-          '" data-chapter="' + slugify(s.title) + '" data-step="' + i + '"' +
-          (opts.ids ? ' id="stage-' + slugify(s.title) + '"' : "") + ">" +
-          visual + copy +
-        "</article>"
-      );
+      var cta = (last && i === total - 1) ? last : null;
+      return renderSplitStep({
+        i: i,
+        total: total,
+        title: s.title,
+        body: s.description,
+        kicker: s.kicker || "",
+        visualHtml: '<div class="split-step__diagram">' + stageIllu(s.visual || s.title) + "</div>",
+        ctaLabel: cta ? cta.label : "",
+        ctaHref: cta ? cta.href : "",
+        id: opts.ids ? "stage-" + slugify(s.title) : "",
+        chapter: slugify(s.title)
+      });
     }).join("");
-    return '<div class="gauri-steps sticky-story" id="gauriSticky">' + steps + "</div>";
+    return '<div class="split-steps gauri-steps sticky-story" id="gauriSticky">' + steps + "</div>";
   }
 
   function homeGauriSticky() {
@@ -303,10 +327,7 @@
           '<h2 class="section__title reveal">' + (g.howItWorksTitle || "Discover → Understand → Prioritize → Activate") + "</h2>" +
           '<p class="lede lede--center reveal">' + (g.howItWorksDescription || "") + "</p>" +
         "</div>" +
-        gauriStepsStory() +
-        '<div class="container" style="padding:48px var(--gutter) var(--section-y);text-align:center">' +
-          '<a href="/gauri" class="btn btn--primary">Explore GAURI</a>' +
-        "</div>" +
+        gauriStepsStory({ ctaOnLast: { label: "Explore GAURI", href: "/gauri" } }) +
       "</section>"
     );
   }
@@ -390,22 +411,21 @@
     opts = opts || {};
     var s = D.services;
     var chapters = [];
-    (s.items || []).forEach(function (it) {
-      if (isGauriService(it)) return;
+    var capItems = (s.items || []).filter(function (it) { return !isGauriService(it); });
+    capItems.forEach(function (it, i) {
       var outs = (it.outcomes || []).map(function (o) { return "<li>" + o + "</li>"; }).join("");
       var id = slugify(it.title);
-      chapters.push(
-        '<article class="cap-chapter reveal" data-anim="up" id="' + id + '" data-chapter="' + id + '">' +
-          '<div class="cap-chapter__inner">' +
-            "<div>" +
-              '<div class="cap-chapter__tag">' + it.tag + "</div>" +
-              "<h2>" + it.title + "</h2>" +
-              '<p class="cap-chapter__desc">' + it.description + "</p>" +
-            "</div>" +
-            '<ul class="cap-chapter__list">' + outs + "</ul>" +
-          "</div>" +
-        "</article>"
-      );
+      chapters.push(renderSplitStep({
+        i: i,
+        total: capItems.length,
+        title: it.title,
+        body: it.description,
+        heading: "h2",
+        visualHtml: '<ul class="split-step__logic">' + outs + "</ul>",
+        panelClass: "split-step__panel--logic",
+        id: id,
+        chapter: id
+      }));
     });
     var g = D.gauri || {};
     chapters.push(
@@ -692,7 +712,7 @@
             '<h2 class="section__title reveal">' + g.howItWorksTitle + '</h2>' +
             '<p class="lede lede--center reveal">' + g.howItWorksDescription + "</p>" +
           "</div>" +
-          gauriStepsStory({ ids: true }) +
+          gauriStepsStory({ ids: true, ctaOnLast: { label: g.primaryCta || "Discuss GAURI", href: "/contact" } }) +
           '<nav class="spy-rail" id="gauriSpyRail" aria-label="GAURI stages">' + spy + "</nav>" +
         "</section>" +
         (g.governedContrast && g.governedContrast.length ? (
@@ -830,7 +850,7 @@
     // GAURI steps: spy-rail only — title/body live on the copy side, not the visual mark.
     var stickyRoot = document.getElementById("gauriSticky");
     if (stickyRoot && "IntersectionObserver" in window) {
-      var chapters = stickyRoot.querySelectorAll(".sticky-story__chapter, .gauri-step");
+      var chapters = stickyRoot.querySelectorAll(".sticky-story__chapter, .split-step, .gauri-step");
       var setStep = function (idx) {
         var rail = document.getElementById("gauriSpyRail");
         if (rail) {
