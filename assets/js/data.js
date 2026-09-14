@@ -28,12 +28,11 @@ window.SOAMIQ = {
     "timezone": "Asia/Kolkata"
   },
   "navigation": {
-    "cta": "Get Started",
+    "cta": "Talk to us",
     "links": [
       { "label": "Home", "href": "/" },
-      { "label": "Services", "href": "/services" },
-      { "label": "Frameworks", "href": "/frameworks" },
-      { "label": "Results", "href": "/services#case-studies" },
+      { "label": "GAURI", "href": "/gauri" },
+      { "label": "Capabilities", "href": "/capabilities" },
       { "label": "About", "href": "/about" },
       { "label": "Contact", "href": "/contact" }
     ]
@@ -41,12 +40,12 @@ window.SOAMIQ = {
   "footer": {
     "columns": [
       {
-        "title": "Solutions",
+        "title": "Product",
         "links": [
-          { "label": "Agentic AI Systems", "href": "/services#services" },
-          { "label": "Generative Intelligence", "href": "/services#services" },
-          { "label": "Data Intelligence", "href": "/services#services" },
-          { "label": "GAURI Framework", "href": "/gauri" }
+          { "label": "GAURI", "href": "/gauri" },
+          { "label": "Capabilities", "href": "/capabilities" },
+          { "label": "Agentic AI Systems", "href": "/capabilities#agentic-ai-systems" },
+          { "label": "Data Intelligence", "href": "/capabilities#data-intelligence-platform" }
         ]
       },
       {
@@ -54,7 +53,6 @@ window.SOAMIQ = {
         "links": [
           { "label": "About", "href": "/about" },
           { "label": "Leadership", "href": "/about#team" },
-          { "label": "Frameworks", "href": "/frameworks" },
           { "label": "Contact", "href": "/contact" }
         ]
       },
@@ -72,14 +70,14 @@ window.SOAMIQ = {
     ]
   },
   "hero": {
-    "eyebrow": "Soamiq Labs Private Limited",
+    "eyebrow": "Soamiq Labs",
     "kicker": "Trust Data. Trust AI.",
-    "title": "AI-native business systems.",
-    "description": "Soamiq builds intelligent systems powered by autonomous agents, enterprise data, and domain intelligence so teams can build smarter and operate optimized.",
-    "primaryCta": "Start with Soamiq",
+    "title": "Trust Data. Trust AI.",
+    "description": "Intelligent AI-native business systems powered by autonomous agents, enterprise data, and domain intelligence.",
+    "primaryCta": "Talk to us",
     "primaryHref": "/contact",
-    "secondaryCta": "Explore Frameworks",
-    "secondaryHref": "/frameworks",
+    "secondaryCta": "Explore GAURI",
+    "secondaryHref": "/gauri",
     "panelEyebrow": "Soamiq system view",
     "panelTitle": "Domain intelligence engine",
     "panelStatus": "Active",
@@ -118,8 +116,8 @@ window.SOAMIQ = {
     ]
   },
   "services": {
-    "title": "Our Services",
-    "description": "Soamiq has three pillars: Agentic AI Systems, Generative Intelligence, and Data Intelligence Platforms. Together they power AI-native business systems.",
+    "title": "Capabilities",
+    "description": "Focused delivery across agents, generative intelligence, trusted data, migration, and domain consulting. GAURI is the product — linked below, not a service card.",
     "items": [
       {
         "tag": "A1",
@@ -242,20 +240,38 @@ window.SOAMIQ = {
   },
   "gauri": {
     "eyebrow": "GAURI",
-    "title": "Agentic AI powered revenue intelligence platform.",
-    "description": "GAURI stands for Growth Acceleration Using Revenue Intelligence. It is the Soamiq framework and Clay agency platform for building smarter sales funnels using agents, data intelligence, and domain-aware revenue signals.",
+    "title": "Governed revenue agents — not copilots that chat about deals.",
+    "description": "GAURI (Growth Acceleration Using Revenue Intelligence) is Soamiq’s path to governed revenue agents — systems that forecast, qualify, and work deals with audit, delegation limits, and examiner-defensible evidence built in.",
     "primaryCta": "Discuss GAURI",
-    "secondaryCta": "View Soamiq Pillars",
-    "howItWorksTitle": "How GAURI Works",
-    "howItWorksDescription": "GAURI helps revenue teams move from scattered sales data to repeatable account intelligence and guided sales actions.",
+    "secondaryCta": "See capabilities",
+    "oneLiner": "We don’t sell AI that talks about your pipeline. We sell revenue agents that can act — and that you can defend.",
+    "howItWorksTitle": "Discover → Understand → Prioritize → Activate",
+    "howItWorksDescription": "A clear revenue workflow before enterprise RI spend — clean data and governed agents beat a flashy layer on inconsistent deals.",
     "stages": [
       { "title": "Discover", "description": "Identify high-fit accounts, buying signals, business triggers, and market segments worth pursuing." },
       { "title": "Understand", "description": "Convert account, contact, domain, and context data into revenue intelligence your team can act on." },
       { "title": "Prioritize", "description": "Score opportunities using firmographic, intent, role, timing, and fit signals." },
       { "title": "Activate", "description": "Move the funnel with agent-assisted research, messaging context, follow-up logic, and next-best actions." }
     ],
-    "outcomesTitle": "What GAURI Improves",
-    "outcomesDescription": "Built as a framework, GAURI can adapt to a company sales motion, data maturity, ICP, market, and revenue workflow.",
+    "governedTitle": "Governed agents vs copilots",
+    "governedDescription": "Most “AI for sales” drafts and suggests. GAURI is built so leadership and risk can answer: who decided, under what limit, with what evidence — and can we shut it off?",
+    "governedContrast": [
+      { "label": "Job", "copilot": "Suggest / draft", "gauri": "Act within policy on revenue workflows" },
+      { "label": "Trust", "copilot": "“Looks right”", "gauri": "Traceable decision + evidence pack" },
+      { "label": "Limits", "copilot": "Soft prompt rules", "gauri": "Hard delegation limits + approval expiry" },
+      { "label": "Failure mode", "copilot": "Hallucinated advice", "gauri": "Contained action + shutdown controls" },
+      { "label": "Buyer defense", "copilot": "Hard to explain", "gauri": "Examiner-ready trail" }
+    ],
+    "principlesTitle": "Buyer language we lead with",
+    "principles": [
+      { "title": "Trust", "description": "Every material revenue action is attributable." },
+      { "title": "Delegation limits", "description": "Agents only do what a human role is allowed to do." },
+      { "title": "Approval expiry", "description": "Standing authority doesn’t live forever." },
+      { "title": "Examiner-defensible evidence", "description": "Why this forecast, score, or next step — from which data." },
+      { "title": "Shutdown controls", "description": "Pause, revoke, or kill an agent without rewriting the stack." }
+    ],
+    "outcomesTitle": "What GAURI is built to improve",
+    "outcomesDescription": "Framework outcomes — not fabricated case metrics. Adapt to sales motion, data maturity, ICP, and revenue workflow.",
     "outcomes": [
       "Sharper prospect research",
       "Better lead and account intelligence",

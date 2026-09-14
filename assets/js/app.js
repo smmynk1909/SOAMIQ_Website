@@ -8,15 +8,22 @@
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- helpers ---------- */
-  function brandMarkup() {
-    // Uses the official logo image. Drop your exact file at
-    // /assets/img/soamiq_logo.png is the official brand logo.
-    return '<span class="brand"><img class="brand__img" src="/assets/img/logo-wordmark.png" alt="SOAMIQ — soamiq.ai" width="321" height="207" /></span>';
+  function brandMarkup(slotClass) {
+    // Logo slot: existing repo wordmark as temporary placeholder.
+    // Do not invent or redesign the Soamiq mark — swap file when official arrives.
+    var cls = "logo-slot" + (slotClass ? " " + slotClass : "");
+    return '<span class="' + cls + '"><span class="brand"><img class="brand__img" src="/assets/img/logo-wordmark.png" alt="SOAMIQ — soamiq.ai" width="321" height="207" /></span></span>';
   }
   function initials(name) {
     return name.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join("").toUpperCase();
   }
   function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  function slugify(s) {
+    return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+  function isGauriService(it) {
+    return /gauri/i.test(it.title || "") || String(it.tag || "").toUpperCase() === "GA";
+  }
 
   /* ---------- animated domain / framework illustrations (inline SVG) ---------- */
   var ILLU = {
@@ -94,7 +101,7 @@
   /* ---------- header (nav only, no banner) ---------- */
   function renderHeader(page) {
     var nav = D.navigation || { links: [], cta: "Get Started" };
-    var activeMap = { home: "/", services: "/services", frameworks: "/frameworks", about: "/about", contact: "/contact" };
+    var activeMap = { home: "/", gauri: "/gauri", capabilities: "/capabilities", services: "/capabilities", about: "/about", contact: "/contact" };
     var active = activeMap[page];
     var links = nav.links.map(function (l) {
       var isActive = l.href === active;
@@ -146,37 +153,88 @@
   }
 
   /* ---------- reusable sections ---------- */
-  function heroSection() {
+  function homeTrustStage() {
     var x = D.hero;
-    var layers = x.systemLayers.map(function (l, i) {
-      return '<div class="layer"><span class="layer__idx">0' + (i + 1) + '</span><span class="layer__name">' + l + "</span></div>";
-    }).join("");
-    var proof = x.proofPoints.map(function (p) {
-      return "<div><dt class=\"grad-text\">" + p.value + "</dt><dd>" + p.label + "</dd></div>";
+    return (
+      '<section class="stage-view stage-view--center" aria-label="Trust">' +
+        '<div class="container">' +
+          brandMarkup("logo-slot--hero") +
+          '<h1 class="stage-view__kicker reveal" data-anim="up">' + (x.kicker || x.title) + "</h1>" +
+          '<p class="stage-view__sub reveal" data-anim="up">' + x.description + "</p>" +
+        "</div>" +
+      "</section>"
+    );
+  }
+
+  function homePillarsStage() {
+    var p = D.premiumFlow;
+    var rows = p.items.map(function (it, i) {
+      return (
+        '<div class="pillar-row reveal" data-anim="up">' +
+          '<div class="pillar-row__idx">0' + (i + 1) + "</div>" +
+          "<div><h3>" + it.title + "</h3><p>" + it.description + "</p>" +
+          '<div class="flow__label" style="margin-top:14px">' + it.label + "</div></div>" +
+        "</div>"
+      );
     }).join("");
     return (
+      '<section class="stage-view" aria-label="Pillars">' +
+        '<div class="container">' +
+          '<p class="eyebrow reveal" style="text-align:center">' + p.eyebrow + "</p>" +
+          '<h2 class="section__title reveal" style="text-align:center;max-width:18ch;margin:0 auto 56px">' + p.title + "</h2>" +
+          '<div class="pillar-rail" data-stagger>' + rows + "</div>" +
+        "</div>" +
+      "</section>"
+    );
+  }
+
+  function homeGauriStage() {
+    var g = D.gauri;
+    var stages = (g.stages || []).map(function (s) { return "<span>" + s.title + "</span>"; }).join('<i aria-hidden="true">→</i>');
+    return (
+      '<section class="stage-view stage-view--center" aria-label="GAURI">' +
+        '<div class="container">' +
+          '<div class="gauri-stage reveal" data-anim="up">' +
+            '<div class="gauri-stage__label">' + g.eyebrow + "</div>" +
+            "<h2>" + g.title + "</h2>" +
+            "<p>" + (g.oneLiner || g.description) + "</p>" +
+            '<div class="gauri-stage__flow" aria-label="GAURI workflow">' + stages + "</div>" +
+            '<a href="/gauri" class="btn btn--ghost">Explore GAURI</a>' +
+          "</div>" +
+        "</div>" +
+      "</section>"
+    );
+  }
+
+  function homePrimaryCta() {
+    var x = D.hero;
+    return (
+      '<section class="stage-view stage-view--center" aria-label="Contact">' +
+        '<div class="container">' +
+          '<h2 class="stage-view__kicker reveal" data-anim="up" style="font-size:clamp(2rem,5vw,3.4rem)">Build smarter.<br>Build optimized.</h2>' +
+          '<p class="stage-view__sub reveal" data-anim="up">' + (D.site.positioning || "") + "</p>" +
+          '<div class="stage-view__cta reveal" data-anim="up">' +
+            '<a href="' + x.primaryHref + '" class="btn btn--primary">' + x.primaryCta + "</a>" +
+          "</div>" +
+        "</div>" +
+      "</section>"
+    );
+  }
+
+  function heroSection() {
+    // Kept for inner pages that still call a dense hero; homepage uses stage-views.
+    var x = D.hero;
+    return (
       '<section class="hero">' +
-        '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
-        '<span class="hero__orb hero__orb--2" aria-hidden="true"></span>' +
         '<div class="container hero__inner">' +
           "<div>" +
+            brandMarkup("logo-slot--hero") +
             '<span class="chip reveal"><span class="dot"></span>' + x.eyebrow + "</span>" +
-            '<h1 class="hero__title reveal" data-anim="up" style="margin-top:22px">' + x.title +
-              '<span class="hero__type"><span id="typewriter"></span><span class="hero__caret" aria-hidden="true"></span></span>' +
-            "</h1>" +
+            '<h1 class="hero__title reveal" data-anim="up" style="margin-top:22px">' + x.title + "</h1>" +
             '<p class="hero__desc reveal" data-anim="up">' + x.description + "</p>" +
             '<div class="hero__cta reveal" data-anim="up">' +
               '<a href="' + x.primaryHref + '" class="btn btn--primary">' + x.primaryCta + "</a>" +
-              '<a href="' + x.secondaryHref + '" class="btn btn--ghost">' + x.secondaryCta + "</a>" +
             "</div>" +
-            '<dl class="hero__proof reveal" data-anim="up">' + proof + "</dl>" +
-          "</div>" +
-          '<div class="panel">' +
-            '<div class="panel__top"><span class="panel__eyebrow">' + x.panelEyebrow + '</span>' +
-              '<span class="panel__status"><span class="dot"></span>' + x.panelStatus + "</span></div>" +
-            '<h3 class="panel__title">' + x.panelTitle + "</h3>" +
-            '<div class="panel__layers">' + layers + "</div>" +
-            '<p class="panel__note">' + x.systemLayerNote + "</p>" +
           "</div>" +
         "</div>" +
       "</section>"
@@ -191,49 +249,49 @@
   }
 
   function premiumFlowSection() {
-    var p = D.premiumFlow;
-    var items = p.items.map(function (it, i) {
-      return (
-        '<div class="flow__item reveal" data-anim="up">' +
-          '<div class="flow__num">' + (i + 1) + "</div>" +
-          '<div class="flow__body"><div class="flow__label">' + it.label + "</div>" +
-            "<h3>" + it.title + "</h3><p>" + it.description + "</p></div>" +
-        "</div>"
-      );
-    }).join("");
-    return (
-      '<section class="section section--white">' +
-        '<div class="container"><div class="scrolly">' +
-          '<div class="scrolly__aside">' +
-            '<p class="eyebrow">' + p.eyebrow + '</p>' +
-            '<h2 class="section__title">' + p.title + '</h2>' +
-            '<p class="lead">' + p.description + "</p>" +
-            '<a href="/services" class="btn btn--ghost" style="margin-top:28px">See all services</a>' +
-          "</div>" +
-          '<div class="scrolly__items" data-stagger>' + items + "</div>" +
-        "</div></div>" +
-      "</section>"
-    );
+    return homePillarsStage();
   }
 
-  function servicesSection() {
+  function servicesSection(opts) {
+    opts = opts || {};
     var s = D.services;
-    var cards = s.items.map(function (it) {
-      var outs = it.outcomes.map(function (o) { return "<li>" + o + "</li>"; }).join("");
-      return (
-        '<article class="card reveal" data-anim="up">' +
-          '<span class="card__tag">' + it.tag + "</span>" +
-          "<h3>" + it.title + "</h3><p>" + it.description + "</p>" +
-          '<ul class="card__list">' + outs + "</ul>" +
+    var chapters = [];
+    (s.items || []).forEach(function (it) {
+      if (isGauriService(it)) return;
+      var outs = (it.outcomes || []).map(function (o) { return "<li>" + o + "</li>"; }).join("");
+      var id = slugify(it.title);
+      chapters.push(
+        '<article class="chapter reveal" data-anim="up" id="' + id + '">' +
+          '<div class="chapter__meta">' +
+            '<div class="chapter__tag">' + it.tag + "</div>" +
+            "<h3>" + it.title + "</h3>" +
+            "<p>" + it.description + "</p>" +
+          "</div>" +
+          '<ul class="chapter__list">' + outs + "</ul>" +
         "</article>"
       );
-    }).join("");
+    });
+    // GAURI as product link, not a service card
+    var g = D.gauri || {};
+    chapters.push(
+      '<article class="chapter chapter--product reveal" data-anim="up" id="gauri">' +
+        '<div class="chapter__meta">' +
+          '<div class="chapter__tag">Product</div>' +
+          "<h3>" + (g.eyebrow || "GAURI") + "</h3>" +
+          "<p>" + (g.oneLiner || g.description || "") + "</p>" +
+          '<a href="/gauri" class="btn btn--primary">Explore GAURI</a>' +
+        "</div>" +
+      "</article>"
+    );
+    var head = opts.hideHead ? "" : (
+      '<div class="section__head reveal"><p class="eyebrow">What we deliver</p>' +
+        '<h2 class="section__title">' + s.title + '</h2>' +
+        '<p class="lead lead--center">' + s.description + "</p></div>"
+    );
     return (
       '<section class="section" id="services"><div class="container">' +
-          '<div class="section__head reveal"><p class="eyebrow">What we do</p>' +
-            '<h2 class="section__title">' + s.title + '</h2>' +
-            '<p class="lead lead--center">' + s.description + "</p></div>" +
-          '<div class="cards" data-stagger>' + cards + "</div>" +
+        head +
+        '<div class="chapters">' + chapters.join("") + "</div>" +
       "</div></section>"
     );
   }
@@ -332,7 +390,6 @@
           "<h2>" + title + "</h2><p>" + text + "</p>" +
           '<div class="hero__cta">' +
             '<a href="/contact" class="btn btn--primary">' + D.hero.primaryCta + "</a>" +
-            '<a href="/frameworks" class="btn btn--ghost">' + D.hero.secondaryCta + "</a>" +
           "</div>" +
       "</div></div></section>"
     );
@@ -348,9 +405,11 @@
   function pageHero(title, desc) {
     return (
       '<section class="page-hero">' +
-        '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
-        '<div class="container"><h1 class="reveal" data-anim="up">' + title + "</h1>" +
-          (desc ? '<p class="reveal" data-anim="up">' + desc + "</p>" : "") + "</div>" +
+        '<div class="container">' +
+          brandMarkup("logo-slot--hero") +
+          '<h1 class="reveal" data-anim="up">' + title + "</h1>" +
+          (desc ? '<p class="reveal" data-anim="up">' + desc + "</p>" : "") +
+        "</div>" +
       "</section>"
     );
   }
@@ -358,14 +417,16 @@
   /* ---------- page renderers ---------- */
   var pages = {
     home: function () {
-      return heroSection() + capabilitiesStrip() + premiumFlowSection() + servicesSection() +
-        domainsStorySection() + processSection() + caseStudiesSection() + faqSection() +
-        ctaBand("Build smarter. Build optimized.", D.site.positioning);
+      // Sparse: one idea per viewport — Trust → Pillars → GAURI → one CTA
+      return homeTrustStage() + homePillarsStage() + homeGauriStage() + homePrimaryCta();
     },
     services: function () {
       return pageHero(D.services.title, D.services.description) +
-        servicesSection() + processSection() + caseStudiesSection() +
+        servicesSection({ hideHead: true }) +
         ctaBand("Have a use case in mind?", "Tell us about the decision or workflow you want to make intelligent.");
+    },
+    capabilities: function () {
+      return pages.services();
     },
     frameworks: function () {
       var fw = D.frameworks;
@@ -442,32 +503,50 @@
       var stages = g.stages.map(function (s) {
         return '<article class="stage reveal" data-anim="up"><h3>' + s.title + "</h3><p>" + s.description + "</p></article>";
       }).join("");
-      var outs = g.outcomes.map(function (o) { return '<span class="pill reveal" data-anim="scale">' + o + "</span>"; }).join("");
+      var contrastHead = '<div class="contrast__row contrast__head"><div class="k">Lens</div><div class="c">Copilot</div><div class="g">Governed agent (GAURI)</div></div>';
+      var contrastRows = (g.governedContrast || []).map(function (r) {
+        return '<div class="contrast__row"><div class="k">' + r.label + '</div><div class="c">' + r.copilot + '</div><div class="g">' + r.gauri + "</div></div>";
+      }).join("");
+      var principles = (g.principles || []).map(function (p) {
+        return '<article class="principle reveal" data-anim="up"><h3>' + p.title + "</h3><p>" + p.description + "</p></article>";
+      }).join("");
+      var outs = (g.outcomes || []).map(function (o) { return '<span class="pill reveal" data-anim="scale">' + o + "</span>"; }).join("");
       return (
         '<section class="page-hero">' +
-          '<span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +
-          '<span class="hero__orb hero__orb--2" aria-hidden="true"></span>' +
           '<div class="container">' +
+            brandMarkup("logo-slot--hero") +
             '<span class="chip reveal"><span class="dot"></span>' + g.eyebrow + "</span>" +
             '<h1 class="reveal" data-anim="up" style="margin-top:20px">' + g.title + "</h1>" +
             '<p class="reveal" data-anim="up">' + g.description + "</p>" +
             '<div class="hero__cta reveal" style="justify-content:center;margin-top:30px">' +
               '<a href="/contact" class="btn btn--primary">' + g.primaryCta + "</a>" +
-              '<a href="/services#services" class="btn btn--ghost">' + g.secondaryCta + "</a>" +
             "</div>" +
           "</div>" +
         "</section>" +
-        '<section class="section section--white"><div class="container">' +
+        '<section class="section section--tight"><div class="container">' +
           '<div class="section__head reveal"><p class="eyebrow">Workflow</p><h2 class="section__title">' + g.howItWorksTitle + '</h2>' +
           '<p class="lead lead--center">' + g.howItWorksDescription + "</p></div>" +
           '<div class="stages" data-stagger>' + stages + "</div>" +
         "</div></section>" +
+        (g.governedContrast && g.governedContrast.length ? (
+          '<section class="section section--alt"><div class="container">' +
+            '<div class="section__head reveal"><p class="eyebrow">Governance</p><h2 class="section__title">' + (g.governedTitle || "Governed agents vs copilots") + '</h2>' +
+            '<p class="lead lead--center">' + (g.governedDescription || "") + "</p></div>" +
+            '<div class="contrast reveal">' + contrastHead + contrastRows + "</div>" +
+          "</div></section>"
+        ) : "") +
+        (g.principles && g.principles.length ? (
+          '<section class="section"><div class="container">' +
+            '<div class="section__head reveal"><p class="eyebrow">Trust posture</p><h2 class="section__title">' + (g.principlesTitle || "") + '</h2></div>' +
+            '<div class="principles" data-stagger>' + principles + "</div>" +
+          "</div></section>"
+        ) : "") +
         '<section class="section section--alt"><div class="container">' +
-          '<div class="section__head reveal"><p class="eyebrow">Impact</p><h2 class="section__title">' + g.outcomesTitle + '</h2>' +
+          '<div class="section__head reveal"><p class="eyebrow">Outcomes</p><h2 class="section__title">' + g.outcomesTitle + '</h2>' +
           '<p class="lead lead--center">' + g.outcomesDescription + "</p></div>" +
           '<div class="pills" data-stagger>' + outs + "</div>" +
         "</div></section>" +
-        ctaBand("Accelerate revenue with GAURI.", "Growth Acceleration Using Revenue Intelligence, tailored to your sales motion.")
+        ctaBand("Discuss GAURI with Soamiq.", g.oneLiner || "Governed revenue agents you can defend.")
       );
     },
     legal: function (which) {
@@ -480,7 +559,7 @@
     },
     usecase: function (slug) {
       var uc = (D.useCases.items || []).filter(function (i) { return i.slug === slug; })[0];
-      if (!uc) return pageHero("Use case not found", "Please return to the services page.");
+      if (!uc) return pageHero("Use case not found", "Please return to the capabilities page.");
       var outs = uc.outcomes.map(function (o) { return "<li>" + o + "</li>"; }).join("");
       return (
         '<section class="page-hero"><span class="hero__orb hero__orb--1" aria-hidden="true"></span>' +

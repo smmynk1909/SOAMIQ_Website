@@ -20,10 +20,11 @@ python3 -m http.server 8000
 
 | Route | File | Description |
 |-------|------|-------------|
-| `/` | `index.html` | Home: hero, capabilities, flow, services, industries, process, results, FAQ |
-| `/services` | `services/index.html` | Service pillars + results |
-| `/frameworks` | `frameworks/index.html` | Reusable frameworks (GAURI) |
-| `/gauri` | `gauri/index.html` | GAURI revenue-intelligence platform |
+| `/` | `index.html` | Home: Trust → three pillars → GAURI stage → one CTA |
+| `/capabilities` | `capabilities/index.html` | Capabilities as sparse chapters (GAURI = product link) |
+| `/services` | `services/index.html` | Redirects to `/capabilities` |
+| `/gauri` | `gauri/index.html` | Discover→Understand→Prioritize→Activate + governance |
+| `/frameworks` | `frameworks/index.html` | Legacy frameworks page (not in primary nav) |
 | `/about` | `about/index.html` | Company, leadership & specialists, stats |
 | `/contact` | `contact/index.html` | Contact info + form |
 | `/privacy`, `/terms` | `privacy/`, `terms/` | Legal |
