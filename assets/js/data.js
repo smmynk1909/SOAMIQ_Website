@@ -68,7 +68,7 @@ window.SOAMIQ = {
       }
     ],
     "social": [
-      { "label": "LinkedIn", "href": "https://www.linkedin.com/company/soamiq" },
+      { "label": "LinkedIn", "href": "https://www.linkedin.com/company/90059695/" },
       { "label": "Email", "href": "mailto:hello@soamiq.ai" }
     ]
   },
@@ -91,11 +91,7 @@ window.SOAMIQ = {
     ],
     "systemLayerNote": "Connected to metrics, context, and execution.",
     // Quarantined from Home — do not render these metric chips on the homepage.
-    "proofPoints": [
-      { "value": "120+", "label": "Projects associated with founding members" },
-      { "value": "9+", "label": "Years of data and AI delivery depth" },
-      { "value": "3", "label": "Core intelligence pillars" }
-    ]
+    "proofPoints": []
   },
   "premiumFlow": {
     "eyebrow": "Build Smarter. Build Optimized.",
