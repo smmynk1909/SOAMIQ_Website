@@ -68,7 +68,6 @@ window.SOAMIQ = {
       }
     ],
     "social": [
-      { "label": "LinkedIn", "href": "https://www.linkedin.com/company/90059695/" },
       { "label": "Email", "href": "mailto:hello@soamiq.ai" }
     ]
   },
